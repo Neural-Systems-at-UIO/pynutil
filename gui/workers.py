@@ -69,17 +69,19 @@ class AnalysisWorker(QThread):
 
             if img_dir and not seg_dir:
                 result = image_to_coords(
-                    img_dir,
+                    read_image_dir(img_dir),
                     registration,
                     atlas,
                 )
             else:
                 result = seg_to_coords(
-                    seg_dir,
+                    read_segmentation_dir(
+                        seg_dir,
+                        pixel_id=self.arguments["object_colour"],
+                        segmentation_format=seg_format,
+                    ),
                     registration,
                     atlas,
-                    pixel_id=self.arguments["object_colour"],
-                    segmentation_format=seg_format,
                 )
 
             if self.cancelled:
