@@ -10,7 +10,9 @@ import os
 import re
 from typing import List
 
+import brainglobe_atlasapi
 import numpy as np
+import tifffile
 
 from .base import AnchoringLoader, RegistrationData, SliceInfo, calculate_physical_dimensions
 from ...io.loaders import number_sections, load_json_file
@@ -121,8 +123,6 @@ class BrainGlobeRegistrationLoader(AnchoringLoader):
     @staticmethod
     def _get_atlas_shape(atlas_name: str):
         """Return the native (un-reoriented) atlas annotation shape."""
-        import brainglobe_atlasapi
-
         bg = brainglobe_atlasapi.BrainGlobeAtlas(atlas_name=atlas_name)
         return bg.annotation.shape  # (AP, DV, LR)
 
@@ -146,8 +146,6 @@ class BrainGlobeRegistrationLoader(AnchoringLoader):
     @staticmethod
     def _find_tiff_dims(reg_dir: str):
         """Read the dimensions of one of the output TIFFs in *reg_dir*."""
-        import tifffile
-
         for name in ("downsampled.tiff", "registered_atlas.tiff", "registered_hemispheres.tiff"):
             p = os.path.join(reg_dir, name)
             if os.path.isfile(p):

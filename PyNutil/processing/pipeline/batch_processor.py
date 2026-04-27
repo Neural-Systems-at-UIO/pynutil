@@ -11,6 +11,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 from ...context import PipelineContext, SectionContext
 from ...image_series import Section, ImageSeries
+from ...io.atlas_loader import resolve_atlas
+from ...io.loaders import _COORDINATE_REQUIRED_COLUMNS
 from ...results import (
     SectionResult,
     IntensitySectionResult,
@@ -342,7 +344,6 @@ def seg_to_coords(
     >>> result.objects.labels.shape
     (M,)
     """
-    from ...io.atlas_loader import resolve_atlas
     atlas = resolve_atlas(atlas)
     atlas_shape = atlas.volume.shape
     pipeline_ctx = PipelineContext.from_format(
@@ -467,7 +468,6 @@ def image_to_coords(
     >>> result.region_intensities.columns.tolist()[:3]
     ['idx', 'name', 'r']
     """
-    from ...io.atlas_loader import resolve_atlas
     atlas = resolve_atlas(atlas)
     atlas_shape = atlas.volume.shape
     pipeline_ctx = PipelineContext.from_format(
@@ -579,10 +579,8 @@ def xy_to_coords(
     >>> result.section_filenames
     []
     """
-    from ...io.atlas_loader import resolve_atlas
     atlas = resolve_atlas(atlas)
     atlas_shape = atlas.volume.shape
-    from ...io.loaders import _COORDINATE_REQUIRED_COLUMNS
 
     missing = _COORDINATE_REQUIRED_COLUMNS - set(coordinates.columns)
     if missing:

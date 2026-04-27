@@ -12,6 +12,7 @@ import warnings
 from typing import Any, Callable, Dict, List, Optional, Tuple
 from scipy import ndimage
 import numpy as np
+import tifffile
 
 from .base import (
     DeformationFunction,
@@ -19,6 +20,11 @@ from .base import (
     RegistrationData,
 )
 from ...io.loaders import load_json_file
+from .visualign_deformations import (
+    triangulate,
+    transform_vec,
+    forwardtransform_vec,
+)
 
 
 class VisuAlignDeformationProvider(DeformationProvider):
@@ -62,12 +68,6 @@ class VisuAlignDeformationProvider(DeformationProvider):
             - inverse_deform: maps from deformed to original (transform_vec)
             - forward_deform: maps from original to deformed (forwardtransform_vec)
         """
-        from .visualign_deformations import (
-            triangulate,
-            transform_vec,
-            forwardtransform_vec,
-        )
-
         triangulation = triangulate(width, height, markers)
 
         def deform_inverse(
@@ -150,8 +150,6 @@ class BrainGlobeDeformationProvider(DeformationProvider):
             FileNotFoundError: If deformation field TIFFs are missing, which
                 should not happen for a valid brainglobe registration output.
         """
-        import tifffile
-
         f0_path = os.path.join(reg_dir, "deformation_field_0.tiff")
         f1_path = os.path.join(reg_dir, "deformation_field_1.tiff")
 

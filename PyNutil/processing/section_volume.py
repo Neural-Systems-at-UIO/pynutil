@@ -5,9 +5,11 @@ from typing import TYPE_CHECKING, Optional, Tuple
 
 import cv2
 import numpy as np
+from scipy.spatial import cKDTree  # type: ignore
 from tqdm import tqdm
 from .adapters.segmentation import SegmentationAdapterRegistry
 from .atlas_map import transform_to_atlas_space
+from .reorientation import reorient_volume
 from .utils import (
     convert_to_intensity,
     resize_mask_nearest,
@@ -93,11 +95,6 @@ def _knn_interpolate_generic(
     batch_size: int,
     mode: str = "mean",
 ) -> np.ndarray:
-    try:
-        from scipy.spatial import cKDTree  # type: ignore
-    except Exception as exc:  # pragma: no cover
-        raise ImportError("SciPy is required for do_interpolation=True") from exc
-
     if k < 1:
         raise ValueError("k must be >= 1")
 
@@ -551,7 +548,6 @@ def interpolate_volume(
     gv, fv, dv = _finalize_volumes(gv, fv, dv, ov_flat, vol_cfg, interp_cfg)
 
     if return_orientation != "lpi":
-        from .reorientation import reorient_volume
         atlas_shape = out_base_shape
         gv = reorient_volume(gv, atlas_shape, return_orientation)
         fv = reorient_volume(fv, atlas_shape, return_orientation)

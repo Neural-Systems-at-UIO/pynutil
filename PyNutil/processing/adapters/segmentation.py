@@ -18,6 +18,9 @@ from typing import Dict, List, Optional, Tuple, Type
 import cv2
 import numpy as np
 
+from ...io.reconstruct_dzi import reconstruct_dzi
+from ..pipeline.connected_components import connected_components_props, labeled_image_props
+
 
 def _detect_pixel_id(segmentation: np.ndarray) -> np.ndarray:
     """Infer the foreground pixel id as the second most common value.
@@ -88,8 +91,6 @@ class SegmentationAdapter(ABC):
             The loaded segmentation image.
         """
         if path.endswith(".dzip"):
-            from ...io.reconstruct_dzi import reconstruct_dzi
-
             return reconstruct_dzi(path)
         return cv2.imread(path, cv2.IMREAD_UNCHANGED)
 
@@ -179,8 +180,6 @@ class BinaryAdapter(SegmentationAdapter):
         binary_mask: np.ndarray,
         min_area: int = 0,
     ) -> List[ObjectInfo]:
-        from ..pipeline.connected_components import connected_components_props
-
         props = connected_components_props(binary_mask, connectivity=4)
         return [
             ObjectInfo(area=p["area"], centroid=p["centroid"], coords=p["coords"])
@@ -219,8 +218,6 @@ class CellposeAdapter(SegmentationAdapter):
         binary_mask: np.ndarray,
         min_area: int = 0,
     ) -> List[ObjectInfo]:
-        from ..pipeline.connected_components import labeled_image_props
-
         props = labeled_image_props(segmentation)
         return [
             ObjectInfo(area=p["area"], centroid=p["centroid"], coords=p["coords"])
