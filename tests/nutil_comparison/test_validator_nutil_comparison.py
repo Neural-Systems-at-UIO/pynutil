@@ -204,11 +204,8 @@ class TestValidatorNutilComparison(TimedTestCase):
                 apply_deformation=False,
                 apply_damage=False,
             )
-            result = seg_to_coords(
-                read_segmentation_dir(seg_folder, pixel_id=scenario["colour"]),
-                alignment,
-                atlas,
-            )
+            segmentations = read_segmentation_dir(seg_folder, pixel_id=scenario["colour"])
+            result = seg_to_coords(segmentations, alignment, atlas)
             label_df = quantify_coords(result, atlas)
         finally:
             shutil.rmtree(temp_root, ignore_errors=True)

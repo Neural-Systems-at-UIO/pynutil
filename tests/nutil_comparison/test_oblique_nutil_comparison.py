@@ -57,11 +57,8 @@ class TestObliqueNutilComparison(TimedTestCase):
             apply_deformation=False,
             apply_damage=False,
         )
-        result = seg_to_coords(
-            read_segmentation_dir(self.segmentation_folder, pixel_id=[0, 0, 0]),
-            alignment,
-            atlas,
-        )
+        segmentations = read_segmentation_dir(self.segmentation_folder, pixel_id=[0, 0, 0])
+        result = seg_to_coords(segmentations, alignment, atlas)
         label_df = quantify_coords(result, atlas)
         return result, label_df
 

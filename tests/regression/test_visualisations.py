@@ -49,15 +49,12 @@ class TestVisualisations(TimedTestCase):
 
             atlas = resolve_atlas(BrainGlobeAtlas(settings["atlas_name"]))
             alignment = read_alignment(settings["alignment_json"])
-            result = seg_to_coords(
-                read_segmentation_dir(
-                    settings["segmentation_folder"],
-                    pixel_id=settings.get("colour", [0, 0, 0]),
-                    segmentation_format=settings.get("segmentation_format", "binary"),
-                ),
-                alignment,
-                atlas,
+            segmentations = read_segmentation_dir(
+                settings["segmentation_folder"],
+                pixel_id=settings.get("colour", [0, 0, 0]),
+                segmentation_format=settings.get("segmentation_format", "binary"),
             )
+            result = seg_to_coords(segmentations, alignment, atlas)
 
             from PyNutil.processing.adapters.segmentation import SegmentationAdapterRegistry
             from PyNutil.io.section_visualisation import create_section_visualisations

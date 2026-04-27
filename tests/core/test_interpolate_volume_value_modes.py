@@ -37,14 +37,11 @@ class TestInterpolateVolumeValueModes(TimedTestCase):
         settings = self._load_settings()
         atlas = BrainGlobeAtlas(settings["atlas_name"])
         alignment = read_alignment(settings["alignment_json"])
-        result = seg_to_coords(
-            read_segmentation_dir(
-                settings["segmentation_folder"],
-                pixel_id=settings.get("colour", [0, 0, 0]),
-            ),
-            alignment,
-            atlas,
+        segmentations = read_segmentation_dir(
+            settings["segmentation_folder"],
+            pixel_id=settings.get("colour", [0, 0, 0]),
         )
+        result = seg_to_coords(segmentations, alignment, atlas)
         label_df = quantify_coords(result, atlas)
         return settings, atlas, result, label_df
 

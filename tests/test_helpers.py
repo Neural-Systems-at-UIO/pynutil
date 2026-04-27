@@ -50,8 +50,9 @@ def run_pipeline_from_settings(settings: dict):
             atlas,
         )
     elif settings.get("image_folder"):
+        images = read_image_dir(settings["image_folder"])
         result = image_to_coords(
-            read_image_dir(settings["image_folder"]),
+            images,
             alignment,
             atlas,
             intensity_channel=settings.get("intensity_channel", "grayscale"),
@@ -59,15 +60,12 @@ def run_pipeline_from_settings(settings: dict):
             max_intensity=settings.get("max_intensity"),
         )
     else:
-        result = seg_to_coords(
-            read_segmentation_dir(
-                settings["segmentation_folder"],
-                pixel_id=settings.get("colour", [0, 0, 0]),
-                segmentation_format=settings.get("segmentation_format", "binary"),
-            ),
-            alignment,
-            atlas,
+        segmentations = read_segmentation_dir(
+            settings["segmentation_folder"],
+            pixel_id=settings.get("colour", [0, 0, 0]),
+            segmentation_format=settings.get("segmentation_format", "binary"),
         )
+        result = seg_to_coords(segmentations, alignment, atlas)
 
     label_df = quantify_coords(result, atlas)
     return atlas, result, label_df, alignment

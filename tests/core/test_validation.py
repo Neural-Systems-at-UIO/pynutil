@@ -27,13 +27,9 @@ class TestValidation(unittest.TestCase):
         """seg_to_coords does not accept min_intensity; passing it should raise TypeError."""
         atlas = self._load_atlas()
         alignment = read_alignment(self.alignment_json)
+        segmentations = read_segmentation_dir(self.image_folder, pixel_id=[0, 0, 0])
         with self.assertRaises(TypeError):
-            seg_to_coords(
-                read_segmentation_dir(self.image_folder, pixel_id=[0, 0, 0]),
-                alignment,
-                atlas,
-                min_intensity=10,
-            )
+            seg_to_coords(segmentations, alignment, atlas, min_intensity=10)
 
     def test_voxel_size_ignored_with_atlas_name(self):
         # We check if it logs a warning. For now we just check if it resets the value.

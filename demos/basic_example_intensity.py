@@ -22,11 +22,8 @@ atlas = BrainGlobeAtlas("allen_mouse_25um")
 alignment = pnt.read_alignment(alignment_json)
 
 # Extract intensity data
-coords = pnt.image_to_coords(
-    pnt.read_image_dir(image_folder),
-    alignment,
-    atlas,
-)
+images = pnt.read_image_dir(image_folder)
+coords = pnt.image_to_coords(images, alignment, atlas)
 
 # Quantify by atlas region
 label_df = pnt.quantify_coords(coords, atlas)
