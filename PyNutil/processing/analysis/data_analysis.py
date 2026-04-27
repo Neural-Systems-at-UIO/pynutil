@@ -274,10 +274,10 @@ def quantify_coords(result, atlas_labels):
         result.points.labels,
         result.objects.labels if result.objects is not None else np.array([], dtype=np.int64),
         result.points.undamaged_mask,
-        result.objects.undamaged_mask if result.objects is not None else np.array([], dtype=bool),
+        result.objects.undamaged_mask if result.objects is not None else None,
         result.points.hemi_labels,
         result.objects.hemi_labels if result.objects is not None else np.array([], dtype=np.int64),
         result.region_areas,
         atlas_labels,
-        with_damage=result.with_damage,
+        with_damage=result.points.undamaged_mask is not None,
     )

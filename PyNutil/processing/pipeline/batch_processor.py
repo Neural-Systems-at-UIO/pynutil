@@ -238,10 +238,8 @@ def _collect_section_results(results):
     pts, ctrs = [], []
     pts_lbl, ctrs_lbl = [], []
     pts_hemi, ctrs_hemi = [], []
-    pt_undam, ct_undam = [], []
     pts_len, ctrs_len = [], []
     areas = []
-    with_damage = False
 
     for r in results:
         pts.append(r.points)
@@ -250,12 +248,31 @@ def _collect_section_results(results):
         ctrs_lbl.append(r.centroids_labels)
         pts_hemi.append(r.points_hemi_labels)
         ctrs_hemi.append(r.centroids_hemi_labels)
-        pt_undam.append(r.per_point_undamaged)
-        ct_undam.append(r.per_centroid_undamaged)
         pts_len.append(len(r.points) if r.points is not None else 0)
         ctrs_len.append(len(r.centroids) if r.centroids is not None else 0)
         areas.append(r.region_areas)
-        with_damage = with_damage or r.has_damage
+
+    # Undamaged masks: None means no damage data for that section.
+    # If any section has damage, fill None sections with all-True so every
+    # section contributes to the combined mask. If no section has damage,
+    # the combined mask is None (no filtering needed).
+    any_damage = any(r.per_point_undamaged is not None for r in results)
+    if any_damage:
+        pt_undam = [
+            r.per_point_undamaged if r.per_point_undamaged is not None
+            else np.ones(len(r.points), dtype=bool)
+            for r in results
+        ]
+        ct_undam = [
+            r.per_centroid_undamaged if r.per_centroid_undamaged is not None
+            else np.ones(len(r.centroids), dtype=bool)
+            for r in results
+        ]
+        combined_pt_undam = _concat(pt_undam, dtype=bool)
+        combined_ct_undam = _concat(ct_undam, dtype=bool)
+    else:
+        combined_pt_undam = None
+        combined_ct_undam = None
 
     return (
         _concat(pts, dtype=np.float64),
@@ -267,9 +284,8 @@ def _collect_section_results(results):
         _combine_region_areas(areas),
         pts_len,
         ctrs_len,
-        _concat(pt_undam, dtype=bool),
-        _concat(ct_undam, dtype=bool),
-        with_damage,
+        combined_pt_undam,
+        combined_ct_undam,
     )
 
 
@@ -358,7 +374,6 @@ def seg_to_coords(
         centroids_len,
         per_point_undamaged,
         per_centroid_undamaged,
-        with_damage,
     ) = _collect_section_results(results)
 
     if return_orientation != "lpi":
@@ -394,7 +409,6 @@ def seg_to_coords(
         objects=object_set,
         section_filenames=segmentations,
         region_areas=region_areas,
-        with_damage=with_damage,
     )
 
 
@@ -632,7 +646,6 @@ def xy_to_coords(
         centroids_len,
         per_point_undamaged,
         per_centroid_undamaged,
-        with_damage,
     ) = _collect_section_results(results)
 
     if return_orientation != "lpi":
@@ -663,5 +676,4 @@ def xy_to_coords(
         objects=object_set,
         section_filenames=[],
         region_areas=region_areas,
-        with_damage=with_damage,
     )

@@ -16,11 +16,10 @@ class SectionResult:
     region_areas: pd.DataFrame
     points_labels: np.ndarray
     centroids_labels: np.ndarray
-    per_point_undamaged: np.ndarray
-    per_centroid_undamaged: np.ndarray
+    per_point_undamaged: Optional[np.ndarray]
+    per_centroid_undamaged: Optional[np.ndarray]
     points_hemi_labels: np.ndarray
     centroids_hemi_labels: np.ndarray
-    has_damage: bool = False
 
     @classmethod
     def empty(cls, region_areas: pd.DataFrame | None = None) -> "SectionResult":
@@ -31,11 +30,10 @@ class SectionResult:
             region_areas=region_areas if region_areas is not None else pd.DataFrame(),
             points_labels=np.array([], dtype=np.int64),
             centroids_labels=np.array([], dtype=np.int64),
-            per_point_undamaged=np.array([], dtype=bool),
-            per_centroid_undamaged=np.array([], dtype=bool),
+            per_point_undamaged=None,
+            per_centroid_undamaged=None,
             points_hemi_labels=np.array([], dtype=np.int64),
             centroids_hemi_labels=np.array([], dtype=np.int64),
-            has_damage=False,
         )
 
 
