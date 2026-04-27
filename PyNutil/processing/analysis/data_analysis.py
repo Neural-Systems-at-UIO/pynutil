@@ -125,24 +125,23 @@ def quantify_labeled_points(
     centroids_hemi,
     region_areas,
     atlas_labels,
-    with_damage: bool,
 ):
     """Aggregate per-pixel and per-centroid counts into a summary table.
 
     Args:
         points_labels: 1-D array of region IDs for points.
         centroids_labels: 1-D array of region IDs for centroids.
-        points_undamaged: 1-D undamaged mask for points.
-        centroids_undamaged: 1-D undamaged mask for centroids.
+        points_undamaged: 1-D undamaged mask for points, or None if no damage mask.
+        centroids_undamaged: 1-D undamaged mask for centroids, or None if no damage mask.
         points_hemi: 1-D hemisphere labels for points.
         centroids_hemi: 1-D hemisphere labels for centroids.
         region_areas: Combined region-area DataFrame (summed across sections).
         atlas_labels: Atlas labels DataFrame.
-        with_damage: Whether damage mask data is present in the result.
 
     Returns:
         label_df — whole-series DataFrame.
     """
+    with_damage = points_undamaged is not None
     count_df = pixel_count_per_region(
         points_labels,
         centroids_labels,
@@ -279,5 +278,4 @@ def quantify_coords(result, atlas_labels):
         result.objects.hemi_labels if result.objects is not None else np.array([], dtype=np.int64),
         result.region_areas,
         atlas_labels,
-        with_damage=result.points.undamaged_mask is not None,
     )
