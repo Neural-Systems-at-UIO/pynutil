@@ -222,7 +222,6 @@ def _deform_and_build_result(
         per_centroid_undamaged=np.asarray(per_centroid_undamaged) if (per_centroid_undamaged is not None and centroids is not None) else None,
         points_hemi_labels=np.asarray(per_point_hemi) if points is not None else np.array([]),
         centroids_hemi_labels=np.asarray(per_centroid_hemi) if centroids is not None else np.array([]),
-        has_damage=has_damage,
     )
 
 
