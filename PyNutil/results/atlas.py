@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -14,4 +14,4 @@ class AtlasData:
     volume: np.ndarray
     hemi_map: Optional[np.ndarray]
     labels: pd.DataFrame
-    voxel_size_um: Optional[float] = None
+    resolution: Optional[Tuple[float, ...]] = None

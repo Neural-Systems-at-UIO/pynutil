@@ -104,7 +104,7 @@ def save_volumes(
     ... )
     """
     resolved = resolve_atlas(atlas)
-    base_voxel_um = float(resolved.voxel_size_um) if resolved.voxel_size_um is not None else 1.0
+    base_voxel_um = float(resolved.resolution[0]) if resolved.resolution is not None else 1.0
 
     def _save_one(volume: np.ndarray, *, name: str) -> None:
         vol_u8 = scale_to_uint8(volume)

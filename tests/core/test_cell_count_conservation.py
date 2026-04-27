@@ -89,7 +89,6 @@ class TestCellCountConservation(unittest.TestCase):
             current_points_hemi=[None] * n_cells,
             current_centroids_hemi=[None] * n_cells,
             df_label_colours=atlas_labels,
-            with_damage=False,
         )
 
         total_pixel_count = int(result["pixel_count"].sum())
@@ -122,7 +121,6 @@ class TestCellCountConservation(unittest.TestCase):
             current_points_hemi=[None] * n_cells,
             current_centroids_hemi=[None] * n_cells,
             df_label_colours=atlas_labels,
-            with_damage=False,
         )
 
         total_counted = int(result["object_count"].sum())
@@ -158,7 +156,6 @@ class TestCellCountConservation(unittest.TestCase):
             current_points_hemi=[None] * n_cells,
             current_centroids_hemi=[None] * n_cells,
             df_label_colours=atlas_labels,
-            with_damage=False,
         )
 
         total_counted = int(result["object_count"].sum())
