@@ -11,9 +11,8 @@ alignment = pnt.read_alignment(
     "tests/test_data/brainglobe_coordinates/registration/brainglobe-registration.json"
 )
 
-coord_df =  pd.read_csv("tests/test_data/brainglobe_coordinates/coordinates.csv")
 coords = pnt.xy_to_coords(
-    coord_df,
+    pd.read_csv("tests/test_data/brainglobe_coordinates/coordinates.csv"),
     alignment,
     atlas,
 )

@@ -6,7 +6,8 @@ import unittest
 import numpy as np
 
 from brainglobe_atlasapi import BrainGlobeAtlas
-from PyNutil import seg_to_coords, read_alignment, read_segmentation_dir
+
+from PyNutil import seg_to_coords, read_alignment
 
 
 TEST_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -29,11 +30,11 @@ class TestReturnOrientation(unittest.TestCase):
 
         cls.atlas = BrainGlobeAtlas("allen_mouse_25um")
         cls.alignment = read_alignment(alignment_json)
-        cls.image_series = read_segmentation_dir(seg_folder)
+        cls.seg_folder = seg_folder
 
     def _run(self, orientation):
         return seg_to_coords(
-            self.image_series,
+            self.seg_folder,
             self.alignment,
             self.atlas,
             return_orientation=orientation,

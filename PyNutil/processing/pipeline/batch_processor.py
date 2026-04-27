@@ -5,7 +5,6 @@ in a folder, mapping each one to atlas space using parallel execution.
 """
 
 import os
-from typing import Callable, TypeVar, Union
 import numpy as np
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
@@ -18,8 +17,7 @@ from ...results import (
     ExtractionResult,
     PointSetResult,
 )
-from ..adapters.base import RegistrationData, SliceInfo
-from ..adapters.segmentation import SegmentationAdapter
+from ..adapters.base import RegistrationData
 from ...results import AtlasData
 from .section_processor import (
     segmentation_to_atlas_space,
@@ -30,10 +28,7 @@ from ..utils import (
     discover_image_files,
 )
 from ..reorientation import reorient_points
-from ...io.loaders import number_sections, _COORDINATE_REQUIRED_COLUMNS
-from ...io.atlas_loader import resolve_atlas
-
-T = TypeVar("T")
+from ...io.loaders import number_sections
 
 
 # ---------------------------------------------------------------------------
@@ -45,9 +40,9 @@ def _run_batch_with_context(
     image_series: ImageSeries,
     registration: RegistrationData,
     pipeline_ctx: PipelineContext,
-    empty_result_factory: Callable[[], T],
-    processing_fn: Callable[[PipelineContext, SectionContext], T],
-) -> tuple[list[str], list[T]]:
+    empty_result_factory,
+    processing_fn,
+):
     """Generic batch scaffold using context objects.
 
     Handles thread-pool setup, per-section looping, and futures collection.
@@ -76,23 +71,6 @@ def _run_batch_with_context(
         max_workers = min(32, len(sections), (os.cpu_count() or 1) + 4)
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = []
-
-            def process_section_with_image(
-                section: Section,
-                slice_info: SliceInfo,
-                section_adapter: SegmentationAdapter,
-                section_pipeline_ctx: PipelineContext,
-                section_processing_fn: Callable[[PipelineContext, SectionContext], T],
-            ) -> T:
-                """Load one section image in the worker and run section processing."""
-                section_ctx = SectionContext(
-                    section_number=section.section_number,
-                    slice_info=slice_info,
-                    image=section.get_image(section_adapter),
-                    filename=section.filename,
-                )
-                return section_processing_fn(section_pipeline_ctx, section_ctx)
-
             for index, section in enumerate(sections):
                 slice_info = slices_by_nr.get(section.section_number)
                 if slice_info is None:
@@ -103,17 +81,16 @@ def _run_batch_with_context(
                 if not slice_info.anchoring:
                     continue
 
+                section_ctx = SectionContext(
+                    section_number=section.section_number,
+                    slice_info=slice_info,
+                    image=section.get_image(adapter),
+                    filename=section.filename,
+                )
                 futures.append(
                     (
                         index,
-                        executor.submit(
-                            process_section_with_image,
-                            section,
-                            slice_info,
-                            adapter,
-                            pipeline_ctx,
-                            processing_fn,
-                        ),
+                        executor.submit(processing_fn, pipeline_ctx, section_ctx),
                     )
                 )
 
@@ -127,18 +104,6 @@ def _run_batch_with_context(
 # Directory readers
 # ---------------------------------------------------------------------------
 
-def _sections_from_dir(folder):
-    if not os.path.exists(folder):
-        raise FileNotFoundError(f"Folder not found: {folder}")
-    paths = discover_image_files(folder)
-    return [
-        Section(
-            section_number=int(number_sections([p])[0]),
-            filename=os.path.basename(p),
-            path=p,
-        )
-        for p in paths
-    ]
 
 def read_segmentation_dir(
     folder,
@@ -168,13 +133,18 @@ def read_segmentation_dir(
         ``section_number`` inferred from the filename and ``path`` set for
         lazy loading.
     """
-
+    if pixel_id is None:
+        pixel_id = [0, 0, 0]
+    paths = discover_image_files(folder)
+    sections = []
+    for path in paths:
+        nr = int(number_sections([path])[0])
+        sections.append(Section(section_number=nr, filename=path, path=path))
     return ImageSeries(
-        sections=_sections_from_dir(folder),
-        pixel_id=pixel_id if pixel_id is not None else [0, 0, 0],
+        sections=sections,
+        pixel_id=pixel_id,
         segmentation_format=segmentation_format,
     )
-
 
 
 def read_image_dir(folder) -> ImageSeries:
@@ -194,7 +164,13 @@ def read_image_dir(folder) -> ImageSeries:
         One :class:`~PyNutil.Section` per discovered file, with ``section_number``
         inferred from the filename and ``path`` set for lazy loading.
     """
-    return ImageSeries(sections=_sections_from_dir(folder))
+    paths = discover_image_files(folder)
+    sections = []
+    for path in paths:
+        nr = int(number_sections([path])[0])
+        sections.append(Section(section_number=nr, filename=path, path=path))
+    return ImageSeries(sections=sections)
+
 
 # ---------------------------------------------------------------------------
 # Concatenation helpers
@@ -302,7 +278,7 @@ def _collect_section_results(results):
 def seg_to_coords(
     image_series: ImageSeries,
     registration: RegistrationData,
-    atlas: Union[AtlasData, "BrainGlobeAtlas"],
+    atlas: AtlasData,
     object_cutoff=0,
     return_orientation="asr",
 ):
@@ -347,6 +323,7 @@ def seg_to_coords(
     >>> result.objects.labels.shape
     (M,)
     """
+    from ...io.atlas_loader import resolve_atlas
     atlas = resolve_atlas(atlas)
     atlas_shape = atlas.volume.shape
     pipeline_ctx = PipelineContext.from_format(
@@ -419,7 +396,7 @@ def seg_to_coords(
 def image_to_coords(
     image_series: ImageSeries,
     registration: RegistrationData,
-    atlas: Union[AtlasData, "BrainGlobeAtlas"],
+    atlas: AtlasData,
     intensity_channel="grayscale",
     min_intensity=None,
     max_intensity=None,
@@ -471,6 +448,7 @@ def image_to_coords(
     >>> result.region_intensities.columns.tolist()[:3]
     ['idx', 'name', 'r']
     """
+    from ...io.atlas_loader import resolve_atlas
     atlas = resolve_atlas(atlas)
     atlas_shape = atlas.volume.shape
     pipeline_ctx = PipelineContext.from_format(
@@ -539,7 +517,7 @@ def image_to_coords(
 def xy_to_coords(
     coordinates: "pd.DataFrame",
     registration: RegistrationData,
-    atlas: Union[AtlasData, "BrainGlobeAtlas"],
+    atlas: AtlasData,
     return_orientation="asr",
 ):
     """Transform image-space coordinates into atlas space.
@@ -582,8 +560,10 @@ def xy_to_coords(
     >>> result.section_filenames
     []
     """
+    from ...io.atlas_loader import resolve_atlas
     atlas = resolve_atlas(atlas)
     atlas_shape = atlas.volume.shape
+    from ...io.loaders import _COORDINATE_REQUIRED_COLUMNS
 
     missing = _COORDINATE_REQUIRED_COLUMNS - set(coordinates.columns)
     if missing:

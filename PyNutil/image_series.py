@@ -8,7 +8,6 @@ providing their own ``numpy`` arrays instead of reading from disk.
 
 from __future__ import annotations
 
-import warnings
 from dataclasses import dataclass, field
 from typing import List, Optional
 
@@ -28,9 +27,7 @@ class Section:
         Numeric identifier that must match a section in the alignment JSON.
     filename:
         Display name used in :attr:`~PyNutil.ExtractionResult.section_filenames`.
-        Defaults to an empty string; set explicitly or use the factory functions
-        :func:`~PyNutil.read_segmentation_dir` / :func:`~PyNutil.read_image_dir`
-        which populate this from the file path automatically.
+        Defaults to *path* when not set explicitly.
     image:
         Pre-loaded image array (2-D or 3-D ``numpy`` array).  Provide this
         when you have already loaded or generated the image data yourself.
@@ -43,12 +40,6 @@ class Section:
     filename: str = ""
     image: Optional[np.ndarray] = field(default=None, repr=False)
     path: Optional[str] = None
-
-    def __post_init__(self):
-        if self.image is None and self.path is None:
-            raise ValueError(
-                f"Section {self.section_number}: either 'image' or 'path' must be provided."
-            )
 
     def get_image(self, adapter) -> np.ndarray:
         """Return the image array, loading from *path* if not pre-loaded.
@@ -94,23 +85,13 @@ class ImageSeries:
     sections: List[Section] = field(default_factory=list)
     pixel_id: object = field(default_factory=lambda: [0, 0, 0])
     segmentation_format: str = "binary"
-    _section_map: dict = field(default_factory=dict, init=False, repr=False, compare=False)
-
-    def __post_init__(self):
-        seen = {}
-        for s in self.sections:
-            if s.section_number in seen:
-                warnings.warn(
-                    f"Duplicate section_number {s.section_number}: "
-                    f"'{seen[s.section_number]}' and '{s.filename}'. "
-                    f"Only '{s.filename}' will be used."
-                )
-            seen[s.section_number] = s.filename
-        self._section_map = {s.section_number: s for s in self.sections}
 
     def get_section_nr(self, section_number: int) -> Optional[Section]:
         """Return the :class:`Section` whose ``section_number`` matches, or ``None``."""
-        return self._section_map.get(section_number)
+        for s in self.sections:
+            if s.section_number == section_number:
+                return s
+        return None
 
     @property
     def filenames(self) -> List[str]:

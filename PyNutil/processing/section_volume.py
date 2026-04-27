@@ -15,7 +15,6 @@ from .utils import (
 from ..io.atlas_loader import resolve_atlas
 from ..image_series import ImageSeries, Section
 from ..results.volume import VolumeResult
-from .reorientation import reorient_volume
 
 if TYPE_CHECKING:
     from .adapters.base import RegistrationData
@@ -136,7 +135,7 @@ def _read_section_signal(
     if vol_cfg.segmentation_mode:
         seg = section.get_image(vol_cfg.segmentation_adapter)
     else:
-        seg = section.image if section.image is not None else cv2.imread(section.path, cv2.IMREAD_UNCHANGED)
+        seg = cv2.imread(section.path, cv2.IMREAD_UNCHANGED)
     if seg is None:
         return None
 
@@ -474,7 +473,7 @@ def interpolate_volume(
     ...     pixel_id=[0, 0, 0],
     ... )
     >>> registration = pnt.read_alignment("path/to/alignment.json")
-    >>> volumes = pnt.interpolate_volume(
+    >>> gv, fv, dv = pnt.interpolate_volume(
     ...     image_series=image_series,
     ...     registration=registration,
     ...     atlas=atlas,
@@ -485,8 +484,8 @@ def interpolate_volume(
             "value_mode must be one of 'pixel_count', 'mean', or 'object_count'"
         )
 
-    atlas_data = resolve_atlas(atlas)
-    atlas_volume = atlas_data.volume
+    atlas = resolve_atlas(atlas)
+    atlas_volume = atlas.volume
 
     out_base_shape = tuple(int(x) for x in atlas_volume.shape)
     out_shape = derive_shape_from_atlas(atlas_shape=out_base_shape, scale=scale)
@@ -552,6 +551,7 @@ def interpolate_volume(
     gv, fv, dv = _finalize_volumes(gv, fv, dv, ov_flat, vol_cfg, interp_cfg)
 
     if return_orientation != "lpi":
+        from .reorientation import reorient_volume
         atlas_shape = out_base_shape
         gv = reorient_volume(gv, atlas_shape, return_orientation)
         fv = reorient_volume(fv, atlas_shape, return_orientation)

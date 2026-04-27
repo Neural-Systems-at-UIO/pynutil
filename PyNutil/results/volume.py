@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 
@@ -15,16 +14,15 @@ class VolumeResult:
     value:
         Atlas-space value volume (float32). Each voxel holds the accumulated
         metric (pixel count, mean intensity, or object count) for that
-        location. ``None`` when the caller did not request this output.
+        location.
     frequency:
         Per-voxel sample-count volume (uint32). Records how many section
-        pixels contributed to each atlas voxel. ``None`` when not requested.
+        pixels contributed to each atlas voxel.
     damage:
         Binary damage-mask volume (uint8). A value of 1 indicates that the
-        corresponding atlas voxel overlaps a damaged region. ``None`` when
-        not requested.
+        corresponding atlas voxel overlaps a damaged region.
     """
 
-    value: Optional[np.ndarray]
-    frequency: Optional[np.ndarray]
-    damage: Optional[np.ndarray]
+    value: np.ndarray
+    frequency: np.ndarray
+    damage: np.ndarray

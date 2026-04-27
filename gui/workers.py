@@ -1,12 +1,11 @@
 import sys
 from typing import Any, Dict
 
-from brainglobe_atlasapi import BrainGlobeAtlas
+import brainglobe_atlasapi
 from PyQt6.QtCore import QThread, pyqtSignal
 from log_manager import TextRedirector
 from PyNutil import (
     load_custom_atlas,
-    resolve_atlas,
     read_alignment,
     read_segmentation_dir,
     read_image_dir,
@@ -50,7 +49,7 @@ class AnalysisWorker(QThread):
                 )
             else:
                 print(f"Using BrainGlobe atlas: {self.arguments['atlas_name']}")
-                atlas = resolve_atlas(BrainGlobeAtlas(self.arguments["atlas_name"]))
+                atlas = brainglobe_atlasapi.BrainGlobeAtlas(self.arguments["atlas_name"])
 
             if self.cancelled:
                 print("Analysis cancelled")
@@ -69,22 +68,18 @@ class AnalysisWorker(QThread):
             seg_format = self.arguments.get("segmentation_format", "binary")
 
             if img_dir and not seg_dir:
-                image_series = read_image_dir(img_dir)
                 result = image_to_coords(
-                    image_series,
+                    img_dir,
                     registration,
                     atlas,
                 )
             else:
-                image_series = read_segmentation_dir(
-                    seg_dir,
-                    pixel_id=self.arguments["object_colour"],
-                    segmentation_format=seg_format,
-                )
                 result = seg_to_coords(
-                    image_series,
+                    seg_dir,
                     registration,
                     atlas,
+                    pixel_id=self.arguments["object_colour"],
+                    segmentation_format=seg_format,
                 )
 
             if self.cancelled:
@@ -165,7 +160,7 @@ class AtlasInstallWorker(QThread):
 
         try:
             self.progress_signal.emit(f"Starting installation of {self.atlas_name}...")
-            BrainGlobeAtlas(self.atlas_name)
+            brainglobe_atlasapi.bg_atlas.BrainGlobeAtlas(self.atlas_name)
 
             if self.cancelled:
                 self.finished_signal.emit(
