@@ -131,6 +131,8 @@ def _read_section_signal(
     """Load an image and return (seg_values, mask, seg_height, seg_width) or None."""
     if vol_cfg.segmentation_mode:
         seg = section.get_image(vol_cfg.segmentation_adapter)
+    elif section.image is not None:
+        seg = section.image
     else:
         seg = cv2.imread(section.path, cv2.IMREAD_UNCHANGED)
     if seg is None:
@@ -470,11 +472,14 @@ def interpolate_volume(
     ...     pixel_id=[0, 0, 0],
     ... )
     >>> registration = pnt.read_alignment("path/to/alignment.json")
-    >>> gv, fv, dv = pnt.interpolate_volume(
+    >>> result = pnt.interpolate_volume(
     ...     image_series=image_series,
     ...     registration=registration,
     ...     atlas=atlas,
     ... )
+    >>> gv = result.value
+    >>> fv = result.frequency
+    >>> dv = result.damage
     """
     if value_mode not in {"pixel_count", "mean", "object_count"}:
         raise ValueError(

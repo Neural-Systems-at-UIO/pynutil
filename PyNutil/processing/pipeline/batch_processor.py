@@ -135,8 +135,6 @@ def read_segmentation_dir(
         ``section_number`` inferred from the filename and ``path`` set for
         lazy loading.
     """
-    if pixel_id is None:
-        pixel_id = [0, 0, 0]
     paths = discover_image_files(folder)
     sections = []
     for path in paths:

@@ -49,7 +49,7 @@ class AnalysisWorker(QThread):
                 )
             else:
                 print(f"Using BrainGlobe atlas: {self.arguments['atlas_name']}")
-                atlas =.BrainGlobeAtlas(self.arguments["atlas_name"])
+                atlas = BrainGlobeAtlas(self.arguments["atlas_name"])
 
             if self.cancelled:
                 print("Analysis cancelled")
