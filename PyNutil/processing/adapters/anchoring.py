@@ -10,7 +10,7 @@ import os
 import re
 from typing import List
 
-import brainglobe_atlasapi
+from brainglobe_atlasapi import BrainGlobeAtlas
 import numpy as np
 import tifffile
 
@@ -123,7 +123,7 @@ class BrainGlobeRegistrationLoader(AnchoringLoader):
     @staticmethod
     def _get_atlas_shape(atlas_name: str):
         """Return the native (un-reoriented) atlas annotation shape."""
-        bg = brainglobe_atlasapi.BrainGlobeAtlas(atlas_name=atlas_name)
+        bg = BrainGlobeAtlas(atlas_name=atlas_name)
         return bg.annotation.shape  # (AP, DV, LR)
 
     @staticmethod
