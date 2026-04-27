@@ -241,6 +241,7 @@ def _collect_section_results(results):
     pt_undam, ct_undam = [], []
     pts_len, ctrs_len = [], []
     areas = []
+    with_damage = False
 
     for r in results:
         pts.append(r.points)
@@ -254,6 +255,7 @@ def _collect_section_results(results):
         pts_len.append(len(r.points) if r.points is not None else 0)
         ctrs_len.append(len(r.centroids) if r.centroids is not None else 0)
         areas.append(r.region_areas)
+        with_damage = with_damage or r.has_damage
 
     return (
         _concat(pts, dtype=np.float64),
@@ -267,6 +269,7 @@ def _collect_section_results(results):
         ctrs_len,
         _concat(pt_undam, dtype=bool),
         _concat(ct_undam, dtype=bool),
+        with_damage,
     )
 
 
@@ -355,6 +358,7 @@ def seg_to_coords(
         centroids_len,
         per_point_undamaged,
         per_centroid_undamaged,
+        with_damage,
     ) = _collect_section_results(results)
 
     if return_orientation != "lpi":
@@ -390,6 +394,7 @@ def seg_to_coords(
         objects=object_set,
         section_filenames=segmentations,
         region_areas=region_areas,
+        with_damage=with_damage,
     )
 
 
@@ -627,6 +632,7 @@ def xy_to_coords(
         centroids_len,
         per_point_undamaged,
         per_centroid_undamaged,
+        with_damage,
     ) = _collect_section_results(results)
 
     if return_orientation != "lpi":
@@ -657,4 +663,5 @@ def xy_to_coords(
         objects=object_set,
         section_filenames=[],
         region_areas=region_areas,
+        with_damage=with_damage,
     )

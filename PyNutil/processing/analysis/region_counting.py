@@ -156,7 +156,7 @@ def pixel_count_per_region(
     current_points_hemi,
     current_centroids_hemi,
     df_label_colours,
-    with_damage=False,
+    with_damage: bool,
 ):
     """
     Tally object counts by region, optionally tracking damage and hemispheres.

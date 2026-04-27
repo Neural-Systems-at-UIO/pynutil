@@ -20,6 +20,7 @@ class SectionResult:
     per_centroid_undamaged: np.ndarray
     points_hemi_labels: np.ndarray
     centroids_hemi_labels: np.ndarray
+    has_damage: bool = False
 
     @classmethod
     def empty(cls, region_areas: pd.DataFrame | None = None) -> "SectionResult":
@@ -34,6 +35,7 @@ class SectionResult:
             per_centroid_undamaged=np.array([], dtype=bool),
             points_hemi_labels=np.array([], dtype=np.int64),
             centroids_hemi_labels=np.array([], dtype=np.int64),
+            has_damage=False,
         )
 
 

@@ -125,7 +125,7 @@ def quantify_labeled_points(
     centroids_hemi,
     region_areas,
     atlas_labels,
-    with_damage,
+    with_damage: bool,
 ):
     """Aggregate per-pixel and per-centroid counts into a summary table.
 
@@ -279,5 +279,5 @@ def quantify_coords(result, atlas_labels):
         result.objects.hemi_labels if result.objects is not None else np.array([], dtype=np.int64),
         result.region_areas,
         atlas_labels,
-        with_damage=True,
+        with_damage=result.with_damage,
     )

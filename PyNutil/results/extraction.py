@@ -126,3 +126,4 @@ class ExtractionResult:
     section_filenames: List[str]
     region_areas: Optional[pd.DataFrame] = None
     region_intensities: Optional[pd.DataFrame] = None
+    with_damage: bool = False

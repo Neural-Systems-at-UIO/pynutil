@@ -118,7 +118,11 @@ def _compute_damage_state(
     scaled_centroidsY,
     slice_info,
 ):
-    """Compute per-point and per-centroid undamaged boolean masks."""
+    """Compute per-point and per-centroid undamaged boolean masks.
+
+    Returns (per_point_undamaged, per_centroid_undamaged, has_damage) where
+    has_damage is True only when the section carried a real damage mask.
+    """
     reg_height, reg_width = slice_info.height, slice_info.width
     damage_mask = slice_info.damage_mask
     if damage_mask is not None:
@@ -135,13 +139,14 @@ def _compute_damage_state(
             ]
         else:
             per_centroid_undamaged = np.array([], dtype=bool)
+        return per_point_undamaged, per_centroid_undamaged, True
     else:
         per_point_undamaged = np.ones(scaled_x.shape, dtype=bool)
         if scaled_centroidsX is not None:
             per_centroid_undamaged = np.ones(scaled_centroidsX.shape, dtype=bool)
         else:
             per_centroid_undamaged = np.array([], dtype=bool)
-    return per_point_undamaged, per_centroid_undamaged
+        return per_point_undamaged, per_centroid_undamaged, False
 
 
 def _compute_hemi_state(
@@ -181,6 +186,7 @@ def _deform_and_build_result(
     centroidsY,
     per_point_undamaged,
     per_centroid_undamaged,
+    has_damage,
     per_point_labels,
     per_centroid_labels,
     per_point_hemi,
@@ -223,6 +229,7 @@ def _deform_and_build_result(
         per_centroid_undamaged=np.asarray(per_centroid_undamaged) if centroids is not None else np.array([]),
         points_hemi_labels=np.asarray(per_point_hemi) if points is not None else np.array([]),
         centroids_hemi_labels=np.asarray(per_centroid_hemi) if centroids is not None else np.array([]),
+        has_damage=has_damage,
     )
 
 
@@ -342,7 +349,7 @@ def segmentation_to_atlas_space(
     per_point_labels = assign_labels_at_coordinates(
         scaled_y, scaled_x, atlas_map, reg_height, reg_width
     )
-    per_point_undamaged, per_centroid_undamaged = _compute_damage_state(
+    per_point_undamaged, per_centroid_undamaged, has_damage = _compute_damage_state(
         scaled_x,
         scaled_y,
         scaled_centroidsX,
@@ -369,6 +376,7 @@ def segmentation_to_atlas_space(
         centroidsY=scaled_centroidsY,
         per_point_undamaged=per_point_undamaged,
         per_centroid_undamaged=per_centroid_undamaged,
+        has_damage=has_damage,
         per_point_labels=per_point_labels,
         per_centroid_labels=per_centroid_labels,
         per_point_hemi=per_point_hemi,
@@ -425,7 +433,7 @@ def coordinates_to_atlas_space(
     )
 
     # Damage and hemisphere state
-    per_point_undamaged, per_centroid_undamaged = _compute_damage_state(
+    per_point_undamaged, per_centroid_undamaged, has_damage = _compute_damage_state(
         scaled_x,
         scaled_y,
         scaled_x,  # centroids = points for coordinate mode
@@ -450,6 +458,7 @@ def coordinates_to_atlas_space(
         centroidsY=scaled_y,
         per_point_undamaged=per_point_undamaged,
         per_centroid_undamaged=per_centroid_undamaged,
+        has_damage=has_damage,
         per_point_labels=per_point_labels,
         per_centroid_labels=per_point_labels,  # same labels for both
         per_point_hemi=per_point_hemi,
