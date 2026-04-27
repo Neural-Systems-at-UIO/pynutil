@@ -141,7 +141,6 @@ def quantify_labeled_points(
     Returns:
         label_df — whole-series DataFrame.
     """
-    with_damage = points_undamaged is not None
     count_df = pixel_count_per_region(
         points_labels,
         centroids_labels,
@@ -150,10 +149,9 @@ def quantify_labeled_points(
         points_hemi,
         centroids_hemi,
         atlas_labels,
-        with_damage,
     )
     label_df = _merge_dataframes(count_df, region_areas, atlas_labels)
-    if not with_damage:
+    if points_undamaged is None:
         cols = [c for c in label_df.columns if "damage" not in c]
         label_df = label_df[cols]
     return label_df
