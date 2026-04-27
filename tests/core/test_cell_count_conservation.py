@@ -77,6 +77,8 @@ class TestCellCountConservation(unittest.TestCase):
         n_cells = 10
         labels = np.array([1, 1, 2, 2, 2, 3, 3, 3, 3, 1], dtype=np.int64)
         atlas_labels = self._make_atlas_labels(1, 2, 3)
+        #i provide a fake damage mask as the regression has that due to
+        # a  now nonexistant bug
         no_mask = np.ones(n_cells, dtype=bool)
 
         result = pixel_count_per_region(
