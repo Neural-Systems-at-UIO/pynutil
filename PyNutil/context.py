@@ -9,10 +9,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, List, Optional, Union
 
-from .processing.adapters.segmentation import SegmentationAdapter
-
 import numpy as np
 import pandas as pd
+
+if TYPE_CHECKING:
+    from .processing.adapters.segmentation import SegmentationAdapter
 
 from .processing.adapters.base import SliceInfo
 
