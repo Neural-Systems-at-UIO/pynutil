@@ -109,7 +109,7 @@ def save_volumes(
     def _save_one(volume: np.ndarray, *, name: str) -> None:
         vol_u8 = scale_to_uint8(volume)
         res = isotropic_resolution_um_for_volume(
-            atlas_volume=resolved.volume,
+            atlas_volume=resolved.annotation,
             volume=vol_u8,
             base_voxel_um=base_voxel_um,
             logger=logger,

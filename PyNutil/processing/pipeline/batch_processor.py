@@ -344,12 +344,12 @@ def seg_to_coords(
     (M,)
     """
     atlas = resolve_atlas(atlas)
-    atlas_shape = atlas.volume.shape
+    atlas_shape = atlas.annotation.shape
     pipeline_ctx = PipelineContext.from_format(
         segmentation_format=image_series.segmentation_format,
         atlas_labels=atlas.labels,
-        atlas_volume=atlas.volume,
-        hemi_map=atlas.hemi_map,
+        atlas_volume=atlas.annotation,
+        hemi_map=atlas.hemispheres,
         object_cutoff=object_cutoff,
         pixel_id=image_series.pixel_id,
     )
@@ -468,12 +468,12 @@ def image_to_coords(
     ['idx', 'name', 'r']
     """
     atlas = resolve_atlas(atlas)
-    atlas_shape = atlas.volume.shape
+    atlas_shape = atlas.annotation.shape
     pipeline_ctx = PipelineContext.from_format(
         segmentation_format="binary",
         atlas_labels=atlas.labels,
-        atlas_volume=atlas.volume,
-        hemi_map=atlas.hemi_map,
+        atlas_volume=atlas.annotation,
+        hemi_map=atlas.hemispheres,
         object_cutoff=0,
         pixel_id=[0, 0, 0],
         intensity_channel=intensity_channel,
@@ -579,7 +579,7 @@ def xy_to_coords(
     []
     """
     atlas = resolve_atlas(atlas)
-    atlas_shape = atlas.volume.shape
+    atlas_shape = atlas.annotation.shape
 
     missing = _COORDINATE_REQUIRED_COLUMNS - set(coordinates.columns)
     if missing:
@@ -595,8 +595,8 @@ def xy_to_coords(
     pipeline_ctx = PipelineContext.from_format(
         segmentation_format="binary",
         atlas_labels=atlas.labels,
-        atlas_volume=atlas.volume,
-        hemi_map=atlas.hemi_map,
+        atlas_volume=atlas.annotation,
+        hemi_map=atlas.hemispheres,
         object_cutoff=0,
         pixel_id=[0, 0, 0],
     )

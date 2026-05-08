@@ -64,7 +64,7 @@ class TestBrainGlobeRegistration(unittest.TestCase):
         data = loader.load(BG_JSON)
         s = data.slices[0]
 
-        atlas_volume = resolve_atlas(BrainGlobeAtlas("allen_mouse_25um")).volume
+        atlas_volume = resolve_atlas(BrainGlobeAtlas("allen_mouse_25um")).annotation
         atlas_slice = generate_target_slice(s.anchoring, atlas_volume)
 
         self.assertEqual(atlas_slice.shape, (s.height, s.width))
@@ -90,7 +90,7 @@ class TestBrainGlobeRegistration(unittest.TestCase):
         self.assertIsNotNone(s.deformation)
         self.assertIsNotNone(s.forward_deformation)
 
-        atlas_volume = resolve_atlas(BrainGlobeAtlas("allen_mouse_25um")).volume
+        atlas_volume = resolve_atlas(BrainGlobeAtlas("allen_mouse_25um")).annotation
         atlas_slice = generate_target_slice(s.anchoring, atlas_volume).astype(np.float64)
         warped = warp_image(atlas_slice, s.deformation, (s.width, s.height)).astype(np.uint32)
 

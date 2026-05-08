@@ -487,7 +487,7 @@ def interpolate_volume(
         )
 
     atlas = resolve_atlas(atlas)
-    atlas_volume = atlas.volume
+    atlas_volume = atlas.annotation
 
     out_base_shape = tuple(int(x) for x in atlas_volume.shape)
     out_shape = derive_shape_from_atlas(atlas_shape=out_base_shape, scale=scale)

@@ -23,7 +23,7 @@ class TestDamageVolumeInterpolation(TimedTestCase):
 
     def _run_interpolation(self, do_interpolation=False, k=5):
         atlas, result, label_df, alignment = run_pipeline_from_settings_file(self.settings_path)
-        scale = small_volume_scale(atlas.volume.shape)
+        scale = small_volume_scale(atlas.annotation.shape)
 
         image_series = read_segmentation_dir(
             self.settings["segmentation_folder"],

@@ -9,9 +9,9 @@ import pandas as pd
 
 @dataclass
 class AtlasData:
-    """Bundle of atlas volume, hemisphere map, and region labels."""
+    """Custom-atlas stand-in that mirrors the BrainGlobeAtlas interface."""
 
-    volume: np.ndarray
-    hemi_map: Optional[np.ndarray]
+    annotation: np.ndarray
+    hemispheres: Optional[np.ndarray]
     labels: pd.DataFrame
     resolution: Optional[Tuple[float, ...]] = None
