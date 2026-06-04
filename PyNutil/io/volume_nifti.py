@@ -103,6 +103,21 @@ def save_volumes(
     ...     atlas=atlas,
     ... )
     """
+    missing = [
+        field_name
+        for field_name, volume in (
+            ("value", volumes.value),
+            ("frequency", volumes.frequency),
+            ("damage", volumes.damage),
+        )
+        if volume is None
+    ]
+    if missing:
+        raise ValueError(
+            "save_volumes requires value, frequency, and damage volumes; "
+            f"got None for {', '.join(missing)}"
+        )
+
     resolved = resolve_atlas(atlas)
     base_voxel_um = float(resolved.resolution[0]) if resolved.resolution is not None else 1.0
 

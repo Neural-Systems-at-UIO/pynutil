@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
-
 import numpy as np
 
 
@@ -24,6 +22,6 @@ class VolumeResult:
         corresponding atlas voxel overlaps a damaged region.
     """
 
-    value: Optional[np.ndarray]
-    frequency: Optional[np.ndarray]
-    damage: Optional[np.ndarray]
+    value: np.ndarray
+    frequency: np.ndarray
+    damage: np.ndarray
