@@ -7,20 +7,15 @@ processing layers.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, List, Optional, Union
+from typing import TYPE_CHECKING, Optional
 
 import numpy as np
 import pandas as pd
 
-if TYPE_CHECKING:
-    from .processing.adapters.segmentation import SegmentationAdapter
-
 from .processing.adapters.base import SliceInfo
 
-
-def _get_segmentation_adapter(segmentation_format: str):
-    from .processing.adapters.segmentation import SegmentationAdapterRegistry
-    return SegmentationAdapterRegistry.get(segmentation_format)
+if TYPE_CHECKING:
+    from .processing.adapters.segmentation import SegmentationAdapter
 
 
 @dataclass(frozen=True)
@@ -74,11 +69,13 @@ class PipelineContext:
         max_intensity=None,
     ) -> "PipelineContext":
         """Construct a PipelineContext, resolving *segmentation_format* to an adapter."""
+        from .processing.adapters.segmentation import SegmentationAdapterRegistry
+
         return cls(
             atlas_labels=atlas_labels,
             atlas_volume=atlas_volume,
             hemi_map=hemi_map,
-            segmentation_adapter=_get_segmentation_adapter(segmentation_format),
+            segmentation_adapter=SegmentationAdapterRegistry.get(segmentation_format),
             object_cutoff=object_cutoff,
             pixel_id=pixel_id,
             intensity_channel=intensity_channel,
