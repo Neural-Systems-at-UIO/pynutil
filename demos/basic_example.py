@@ -1,19 +1,14 @@
-import os
+from pathlib import Path
 
 from brainglobe_atlasapi import BrainGlobeAtlas
 import PyNutil as pnt
 
 # Configuration
-script_dir = os.path.dirname(os.path.abspath(__file__))
-repo_root = os.path.abspath(os.path.join(script_dir, ".."))
-segmentation_folder = os.path.join(
-    repo_root, "tests/test_data/nonlinear_allen_mouse/segmentations/"
-)
-alignment_json = os.path.join(
-    repo_root, "tests/test_data/nonlinear_allen_mouse/alignment.json"
-)
+repo_root = Path(__file__).resolve().parents[1]
+segmentation_folder = repo_root / "tests/test_data/nonlinear_allen_mouse/segmentations"
+alignment_json = repo_root / "tests/test_data/nonlinear_allen_mouse/alignment.json"
 colour = [0, 0, 0]
-output_folder = os.path.join(repo_root, "test_result/hemi_test_bg6_damage_18_03_2026")
+output_folder = repo_root / "test_result/hemi_test_bg6_damage_18_03_2026"
 
 # Load atlas (BrainGlobe) and alignment
 atlas = BrainGlobeAtlas("allen_mouse_25um")

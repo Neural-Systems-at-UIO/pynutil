@@ -121,7 +121,7 @@ def save_volumes(
     resolved = resolve_atlas(atlas)
     base_voxel_um = float(resolved.resolution[0]) if resolved.resolution is not None else 1.0
 
-    def _save_one(volume: np.ndarray, *, name: str) -> None:
+    def _save_one_volume(volume: np.ndarray, *, name: str) -> None:
         vol_u8 = scale_to_uint8(volume)
         res = isotropic_resolution_um_for_volume(
             atlas_volume=resolved.annotation,
@@ -131,6 +131,6 @@ def save_volumes(
         )
         write_nifti(vol_u8, res, f"{output_folder}/interpolated_volume/{name}")
 
-    _save_one(volumes.value, name="interpolated_volume")
-    _save_one(volumes.frequency, name="frequency_volume")
-    _save_one(volumes.damage, name="damage_volume")
+    _save_one_volume(volumes.value, name="interpolated_volume")
+    _save_one_volume(volumes.frequency, name="frequency_volume")
+    _save_one_volume(volumes.damage, name="damage_volume")
