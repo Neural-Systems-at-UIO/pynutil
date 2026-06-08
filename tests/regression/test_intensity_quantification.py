@@ -9,7 +9,7 @@ from brainglobe_atlasapi import BrainGlobeAtlas
 # Add the root directory to sys.path to allow importing PyNutil
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from PyNutil import read_alignment, image_to_coords, quantify_coords, save_analysis
+from PyNutil import read_alignment, read_image_dir, image_to_coords, quantify_coords, save_analysis
 from timing_utils import TimedTestCase
 
 class TestIntensityQuantification(TimedTestCase):
@@ -31,8 +31,9 @@ class TestIntensityQuantification(TimedTestCase):
 
         atlas = BrainGlobeAtlas(self.atlas_name)
         alignment = read_alignment(self.alignment_json)
+        images = read_image_dir(self.image_folder)
         result = image_to_coords(
-            self.image_folder,
+            images,
             alignment,
             atlas,
             intensity_channel="grayscale",
@@ -68,12 +69,8 @@ class TestIntensityQuantification(TimedTestCase):
 
         atlas = BrainGlobeAtlas(self.atlas_name)
         alignment = read_alignment(self.alignment_json)
-        result = image_to_coords(
-            self.rgb_image_folder,
-            alignment,
-            atlas,
-            intensity_channel="grayscale",
-        )
+        images = read_image_dir(self.rgb_image_folder)
+        result = image_to_coords(images, alignment, atlas, intensity_channel="grayscale")
         label_df = quantify_coords(result, atlas)
 
         # Save with original_colours colormap
@@ -103,8 +100,9 @@ class TestIntensityQuantification(TimedTestCase):
 
         atlas = BrainGlobeAtlas(self.atlas_name)
         alignment = read_alignment(self.alignment_json)
+        images = read_image_dir(self.image_folder)
         result = image_to_coords(
-            self.image_folder,
+            images,
             alignment,
             atlas,
             intensity_channel="grayscale",

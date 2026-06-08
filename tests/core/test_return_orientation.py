@@ -7,7 +7,7 @@ import numpy as np
 
 from brainglobe_atlasapi import BrainGlobeAtlas
 
-from PyNutil import seg_to_coords, read_alignment
+from PyNutil import seg_to_coords, read_alignment, read_segmentation_dir
 
 
 TEST_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -34,7 +34,7 @@ class TestReturnOrientation(unittest.TestCase):
 
     def _run(self, orientation):
         return seg_to_coords(
-            self.seg_folder,
+            read_segmentation_dir(self.seg_folder),
             self.alignment,
             self.atlas,
             return_orientation=orientation,

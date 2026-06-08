@@ -10,8 +10,10 @@ import os
 import re
 from typing import List
 
-import numpy as np
 from brainglobe_atlasapi import BrainGlobeAtlas
+import numpy as np
+import tifffile
+
 from .base import AnchoringLoader, RegistrationData, SliceInfo, calculate_physical_dimensions
 from ...io.loaders import number_sections, load_json_file
 
@@ -144,8 +146,6 @@ class BrainGlobeRegistrationLoader(AnchoringLoader):
     @staticmethod
     def _find_tiff_dims(reg_dir: str):
         """Read the dimensions of one of the output TIFFs in *reg_dir*."""
-        import tifffile
-
         for name in ("downsampled.tiff", "registered_atlas.tiff", "registered_hemispheres.tiff"):
             p = os.path.join(reg_dir, name)
             if os.path.isfile(p):

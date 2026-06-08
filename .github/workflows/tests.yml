@@ -1,6 +1,10 @@
-name: Run Tests on Push
+name: Run Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   test:
@@ -23,7 +27,7 @@ jobs:
     - name: Download atlas
       run: |
         brainglobe install -a allen_mouse_25um
-
+        
     - name: Run tests
       run: |
         python -m unittest discover -s tests -v

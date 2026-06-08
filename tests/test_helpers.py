@@ -7,13 +7,14 @@ from brainglobe_atlasapi import BrainGlobeAtlas
 from PyNutil import (
     load_custom_atlas,
     read_alignment,
+    read_segmentation_dir,
+    read_image_dir,
     seg_to_coords,
     image_to_coords,
     xy_to_coords,
     quantify_coords,
 )
-
-
+from PyNutil.io.atlas_loader import resolve_atlas
 def small_volume_scale(atlas_shape, target_max_dim: float = 80.0) -> float:
     sx, sy, sz = (int(x) for x in atlas_shape)
     max_dim = max(sx, sy, sz)
@@ -23,7 +24,7 @@ def small_volume_scale(atlas_shape, target_max_dim: float = 80.0) -> float:
 def load_atlas_from_settings(settings: dict):
     """Load an AtlasData from a settings dictionary."""
     if settings.get("atlas_name"):
-        return BrainGlobeAtlas(settings["atlas_name"])
+        return resolve_atlas(BrainGlobeAtlas(settings["atlas_name"]))
     return load_custom_atlas(
         settings["atlas_path"],
         settings.get("hemi_path"),
@@ -47,8 +48,9 @@ def run_pipeline_from_settings(settings: dict):
             atlas,
         )
     elif settings.get("image_folder"):
+        images = read_image_dir(settings["image_folder"])
         result = image_to_coords(
-            settings["image_folder"],
+            images,
             alignment,
             atlas,
             intensity_channel=settings.get("intensity_channel", "grayscale"),
@@ -56,13 +58,12 @@ def run_pipeline_from_settings(settings: dict):
             max_intensity=settings.get("max_intensity"),
         )
     else:
-        result = seg_to_coords(
+        segmentations = read_segmentation_dir(
             settings["segmentation_folder"],
-            alignment,
-            atlas,
             pixel_id=settings.get("colour", [0, 0, 0]),
             segmentation_format=settings.get("segmentation_format", "binary"),
         )
+        result = seg_to_coords(segmentations, alignment, atlas)
 
     label_df = quantify_coords(result, atlas)
     return atlas, result, label_df, alignment

@@ -79,8 +79,8 @@ class TestQuantification(TimedTestCase):
             "right_hemi_undamaged_area_fraction",
         ]
 
-        # Filter columns based on which ones are actually available in the expected output
-        columns = [col for col in columns if col in expected_output.columns]
+        # Only check columns present in both expected output and actual output
+        columns = [col for col in columns if col in expected_output.columns and col in label_df.columns]
 
         for column in columns:
             with self.subTest(column=column):

@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 from typing import Optional
 
+import nibabel as nib  # type: ignore
 import numpy as np
 
 
@@ -22,11 +23,6 @@ def write_nifti(
         output_path: Output path without extension; ".nii.gz" is appended.
         origin_offsets_um: Optional XYZ translation offsets in microns.
     """
-
-    try:
-        import nibabel as nib  # type: ignore
-    except Exception as exc:  # pragma: no cover
-        raise ImportError("nibabel is required for write_nifti") from exc
 
     if origin_offsets_um is None:
         origin_offsets_um = np.array([0, 0, 0], dtype=np.float32)

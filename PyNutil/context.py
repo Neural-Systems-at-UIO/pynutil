@@ -7,13 +7,15 @@ processing layers.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Optional, Union
+from typing import TYPE_CHECKING, Optional
 
 import numpy as np
 import pandas as pd
 
 from .processing.adapters.base import SliceInfo
-from .processing.adapters.segmentation import SegmentationAdapter, SegmentationAdapterRegistry
+
+if TYPE_CHECKING:
+    from .processing.adapters.segmentation import SegmentationAdapter
 
 
 @dataclass(frozen=True)
@@ -67,6 +69,8 @@ class PipelineContext:
         max_intensity=None,
     ) -> "PipelineContext":
         """Construct a PipelineContext, resolving *segmentation_format* to an adapter."""
+        from .processing.adapters.segmentation import SegmentationAdapterRegistry
+
         return cls(
             atlas_labels=atlas_labels,
             atlas_volume=atlas_volume,
@@ -90,10 +94,13 @@ class SectionContext:
         Numeric section identifier matching the alignment JSON.
     slice_info : SliceInfo
         Registration data for this section (anchoring, deformation, damage …).
-    segmentation_path : str
-        Path to the segmentation / image file on disk.
+    image : np.ndarray
+        Pre-loaded image array for this section.
+    filename : str
+        Source filename, used for output tracking (empty string if unknown).
     """
 
     section_number: int
     slice_info: SliceInfo
-    segmentation_path: str
+    image: np.ndarray
+    filename: str = ""

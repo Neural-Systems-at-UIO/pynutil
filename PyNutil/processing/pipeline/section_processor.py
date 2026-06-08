@@ -118,7 +118,11 @@ def _compute_damage_state(
     scaled_centroidsY,
     slice_info,
 ):
-    """Compute per-point and per-centroid undamaged boolean masks."""
+    """Compute per-point and per-centroid undamaged boolean masks.
+
+    Returns (per_point_undamaged, per_centroid_undamaged). Both are None when
+    the section has no damage mask, meaning all points are implicitly undamaged.
+    """
     reg_height, reg_width = slice_info.height, slice_info.width
     damage_mask = slice_info.damage_mask
     if damage_mask is not None:
@@ -135,13 +139,8 @@ def _compute_damage_state(
             ]
         else:
             per_centroid_undamaged = np.array([], dtype=bool)
-    else:
-        per_point_undamaged = np.ones(scaled_x.shape, dtype=bool)
-        if scaled_centroidsX is not None:
-            per_centroid_undamaged = np.ones(scaled_centroidsX.shape, dtype=bool)
-        else:
-            per_centroid_undamaged = np.array([], dtype=bool)
-    return per_point_undamaged, per_centroid_undamaged
+        return per_point_undamaged, per_centroid_undamaged
+    return None, None
 
 
 def _compute_hemi_state(
@@ -219,8 +218,8 @@ def _deform_and_build_result(
         region_areas=region_areas,
         points_labels=np.asarray(per_point_labels) if points is not None else np.array([]),
         centroids_labels=np.asarray(per_centroid_labels) if centroids is not None else np.array([]),
-        per_point_undamaged=np.asarray(per_point_undamaged) if points is not None else np.array([]),
-        per_centroid_undamaged=np.asarray(per_centroid_undamaged) if centroids is not None else np.array([]),
+        per_point_undamaged=np.asarray(per_point_undamaged) if (per_point_undamaged is not None and points is not None) else None,
+        per_centroid_undamaged=np.asarray(per_centroid_undamaged) if (per_centroid_undamaged is not None and centroids is not None) else None,
         points_hemi_labels=np.asarray(per_point_hemi) if points is not None else np.array([]),
         centroids_hemi_labels=np.asarray(per_centroid_hemi) if centroids is not None else np.array([]),
     )
@@ -304,7 +303,7 @@ def segmentation_to_atlas_space(
     pixel_id = p_ctx.pixel_id
     adapter = p_ctx.segmentation_adapter
 
-    segmentation = adapter.load(s_ctx.segmentation_path)
+    segmentation = s_ctx.image
     if pixel_id == "auto":
         pixel_id = adapter.detect_pixel_id(segmentation)
     seg_height, seg_width = segmentation.shape[:2]
@@ -474,7 +473,7 @@ def segmentation_to_atlas_space_intensity(
     slice_info = s_ctx.slice_info
     adapter = p_ctx.segmentation_adapter
 
-    image = adapter.load(s_ctx.segmentation_path)
+    image = s_ctx.image
     intensity = convert_to_intensity(image, p_ctx.intensity_channel)
     _apply_intensity_bounds(intensity, p_ctx.min_intensity, p_ctx.max_intensity)
 

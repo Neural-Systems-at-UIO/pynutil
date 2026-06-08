@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -9,9 +9,9 @@ import pandas as pd
 
 @dataclass
 class AtlasData:
-    """Bundle of atlas volume, hemisphere map, and region labels."""
+    """Custom-atlas stand-in that mirrors the BrainGlobeAtlas interface."""
 
-    volume: np.ndarray
-    hemi_map: Optional[np.ndarray]
+    annotation: np.ndarray
+    hemispheres: Optional[np.ndarray]
     labels: pd.DataFrame
-    voxel_size_um: Optional[float] = None
+    resolution: Optional[Tuple[float, ...]] = None

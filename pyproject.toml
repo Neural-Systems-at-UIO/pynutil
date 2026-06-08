@@ -29,6 +29,7 @@ dependencies = [
     "nibabel",
     "orjson",
     "tqdm",
+    "tifffile",
 ]
 
 [project.urls]

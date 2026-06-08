@@ -12,6 +12,7 @@ import warnings
 from typing import Any, Callable, Dict, List, Optional, Tuple
 from scipy import ndimage
 import numpy as np
+import tifffile
 
 from .base import (
     DeformationFunction,
@@ -149,8 +150,6 @@ class BrainGlobeDeformationProvider(DeformationProvider):
             FileNotFoundError: If deformation field TIFFs are missing, which
                 should not happen for a valid brainglobe registration output.
         """
-        import tifffile
-
         f0_path = os.path.join(reg_dir, "deformation_field_0.tiff")
         f1_path = os.path.join(reg_dir, "deformation_field_1.tiff")
 

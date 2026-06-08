@@ -48,9 +48,7 @@ def resolve_atlas(atlas):
     volume = process_atlas_volume(atlas.annotation)
     hemi_map = process_atlas_volume(atlas.hemispheres)
     labels = load_atlas_labels(atlas)
-    resolution = getattr(atlas, "resolution", None)
-    voxel_size_um = float(resolution[0]) if resolution is not None else None
-    return AtlasData(volume=volume, hemi_map=hemi_map, labels=labels, voxel_size_um=voxel_size_um)
+    return AtlasData(annotation=volume, hemispheres=hemi_map, labels=labels, resolution=atlas.resolution)
 
 
 def resolve_atlas_labels(atlas_labels):
@@ -107,4 +105,4 @@ def load_custom_atlas(atlas_path, hemi_path, label_path):
 
     atlas_labels = pd.read_csv(label_path)
 
-    return AtlasData(volume=atlas_volume, hemi_map=hemi_volume, labels=atlas_labels)
+    return AtlasData(annotation=atlas_volume, hemispheres=hemi_volume, labels=atlas_labels)
