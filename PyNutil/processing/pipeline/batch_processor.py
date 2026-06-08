@@ -4,10 +4,12 @@ This module contains functions for processing all segmentation files
 in a folder, mapping each one to atlas space using parallel execution.
 """
 
+from concurrent.futures import ThreadPoolExecutor
 import os
+from typing import Dict, Optional, Sequence, Union
+
 import numpy as np
 import pandas as pd
-from concurrent.futures import ThreadPoolExecutor
 from brainglobe_atlasapi import BrainGlobeAtlas
 from ...context import PipelineContext, SectionContext
 from ...image_series import Section, ImageSeries
@@ -20,7 +22,6 @@ from ...results import (
     PointSetResult,
 )
 from ..adapters.base import RegistrationData
-from typing import Union
 from ...results import AtlasData
 from .section_processor import (
     segmentation_to_atlas_space,
@@ -109,9 +110,9 @@ def _run_batch_with_context(
 
 
 def read_segmentation_dir(
-    folder,
-    pixel_id=None,
-    segmentation_format="binary",
+    folder: Union[str, os.PathLike],
+    pixel_id: Optional[Union[str, Sequence[int], np.ndarray]] = None,
+    segmentation_format: str = "binary",
 ) -> ImageSeries:
     """Discover segmentation image files in *folder* and return an :class:`~PyNutil.ImageSeries`.
 
@@ -120,12 +121,12 @@ def read_segmentation_dir(
 
     Parameters
     ----------
-    folder
+    folder : str or os.PathLike
         Path to a folder containing segmentation image files.
-    pixel_id
+    pixel_id : str, sequence of int, numpy.ndarray, or None
         RGB value or label identifying the segmented class of interest.
         Defaults to ``[0, 0, 0]``.
-    segmentation_format
+    segmentation_format : str
         Name of the segmentation adapter to use, for example ``"binary"`` or
         ``"cellpose"``.
 
@@ -137,7 +138,7 @@ def read_segmentation_dir(
         lazy loading.
     """
     paths = discover_image_files(folder)
-    sections = {}
+    sections: Dict[int, Section] = {}
     for path in paths:
         nr = int(number_sections([path])[0])
         if nr in sections:
@@ -150,7 +151,7 @@ def read_segmentation_dir(
     )
 
 
-def read_image_dir(folder) -> ImageSeries:
+def read_image_dir(folder: Union[str, os.PathLike]) -> ImageSeries:
     """Discover source image files in *folder* and return an :class:`~PyNutil.ImageSeries`.
 
     Images are **not** loaded immediately — each section loads its image on
@@ -158,7 +159,7 @@ def read_image_dir(folder) -> ImageSeries:
 
     Parameters
     ----------
-    folder
+    folder : str or os.PathLike
         Path to a folder containing source image files.
 
     Returns
@@ -168,7 +169,7 @@ def read_image_dir(folder) -> ImageSeries:
         inferred from the filename and ``path`` set for lazy loading.
     """
     paths = discover_image_files(folder)
-    sections = {}
+    sections: Dict[int, Section] = {}
     for path in paths:
         nr = int(number_sections([path])[0])
         if nr in sections:
