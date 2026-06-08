@@ -9,7 +9,7 @@ providing their own ``numpy`` arrays instead of reading from disk.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import numpy as np
 
@@ -70,8 +70,7 @@ class ImageSeries:
     Parameters
     ----------
     sections:
-        List of :class:`Section` objects.  Order does not matter; sections are
-        looked up by ``section_number``.
+        Dictionary mapping ``section_number`` to :class:`Section` objects.
     pixel_id:
         RGB value (or label) identifying the segmented class of interest.
         Set by :func:`~PyNutil.read_segmentation_dir` and consumed by
@@ -82,18 +81,11 @@ class ImageSeries:
         consumed by :func:`~PyNutil.seg_to_coords`.
     """
 
-    sections: List[Section] = field(default_factory=list)
+    sections: Dict[int, Section] = field(default_factory=dict)
     pixel_id: object = field(default_factory=lambda: [0, 0, 0])
     segmentation_format: str = "binary"
-
-    def get_section_nr(self, section_number: int) -> Optional[Section]:
-        """Return the :class:`Section` whose ``section_number`` matches, or ``None``."""
-        for s in self.sections:
-            if s.section_number == section_number:
-                return s
-        return None
 
     @property
     def filenames(self) -> List[str]:
         """Display filenames for all sections."""
-        return [s.filename for s in self.sections]
+        return [s.filename for s in self.sections.values()]

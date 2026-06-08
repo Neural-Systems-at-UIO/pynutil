@@ -65,7 +65,7 @@ def _run_batch_with_context(
                *filenames*, each element being the Future's result.
     """
     slices_by_nr = {s.section_number: s for s in registration.slices}
-    sections = image_series.sections
+    sections = list(image_series.sections.values())
     adapter = pipeline_ctx.segmentation_adapter
 
     results = [empty_result_factory() for _ in range(len(sections))]
@@ -137,10 +137,12 @@ def read_segmentation_dir(
         lazy loading.
     """
     paths = discover_image_files(folder)
-    sections = []
+    sections = {}
     for path in paths:
         nr = int(number_sections([path])[0])
-        sections.append(Section(section_number=nr, filename=path, path=path))
+        if nr in sections:
+            raise ValueError(f"Duplicate section number {nr} in {folder}.")
+        sections[nr] = Section(section_number=nr, filename=path, path=path)
     return ImageSeries(
         sections=sections,
         pixel_id=pixel_id,
@@ -166,10 +168,12 @@ def read_image_dir(folder) -> ImageSeries:
         inferred from the filename and ``path`` set for lazy loading.
     """
     paths = discover_image_files(folder)
-    sections = []
+    sections = {}
     for path in paths:
         nr = int(number_sections([path])[0])
-        sections.append(Section(section_number=nr, filename=path, path=path))
+        if nr in sections:
+            raise ValueError(f"Duplicate section number {nr} in {folder}.")
+        sections[nr] = Section(section_number=nr, filename=path, path=path)
     return ImageSeries(sections=sections)
 
 

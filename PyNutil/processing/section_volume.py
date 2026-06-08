@@ -546,7 +546,7 @@ def interpolate_volume(
         np.zeros((gv.size,), dtype=np.uint32) if value_mode == "object_count" else None
     )
 
-    for section in image_series.sections:
+    for section in image_series.sections.values():
         slice_info = slice_by_nr.get(section.section_number)
         _process_one_section(section, slice_info, vol_cfg, gv, fv, dv, ov_flat)
 
