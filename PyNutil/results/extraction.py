@@ -51,10 +51,14 @@ class PointSetResult:
     ) -> Optional[np.ndarray]:
         """Reorient *pts* back to internal orientation if needed.
 
-        Args:
-            pts: (N, 3) array of points in ``self.orientation``.
+        Parameters
+        ----------
+        pts : ndarray
+            (N, 3) array of points in ``self.orientation``.
 
-        Returns:
+        Returns
+        -------
+        ndarray
             (N, 3) array of points in internal orientation.
         """
         if pts is None or len(pts) == 0 or self.orientation == INTERNAL_ORIENTATION:

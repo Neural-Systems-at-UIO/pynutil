@@ -22,8 +22,10 @@ class SettingsManager:
         """
         Initialize the settings manager.
 
-        Args:
-            settings_path: Path to the settings file
+        Parameters
+        ----------
+        settings_path : str
+            Path to the settings file.
         """
         self.settings_path = settings_path
         self.settings = self.load_settings()
@@ -57,9 +59,12 @@ class SettingsManager:
         """
         Update recent files list for a specific setting.
 
-        Args:
-            key: Setting key
-            value: New value to add to recent list
+        Parameters
+        ----------
+        key : str
+            Setting key.
+        value : str
+            New value to add to recent list.
         """
         if not value or not value.strip():
             return

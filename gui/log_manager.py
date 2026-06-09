@@ -25,8 +25,10 @@ class LogManager:
         """
         Initialize the log manager.
 
-        Args:
-            output_widget: Widget to display logs
+        Parameters
+        ----------
+        output_widget
+            Widget to display logs.
         """
         self.output_widget = output_widget
         self.log_collection = ""
@@ -42,8 +44,10 @@ class LogManager:
         """
         Append text to the log.
 
-        Args:
-            text: Text to append
+        Parameters
+        ----------
+        text : str
+            Text to append.
         """
         self.log_collection += text.replace("\n", "<br>") + "<br>"
         self.update_display()
@@ -52,8 +56,10 @@ class LogManager:
         """
         Set the current progress text.
 
-        Args:
-            text: Progress text
+        Parameters
+        ----------
+        text : str
+            Progress text.
         """
         self.current_progress = text
         self.update_display()

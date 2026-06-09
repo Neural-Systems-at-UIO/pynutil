@@ -53,17 +53,25 @@ def _run_batch_with_context(
     Images are loaded lazily per section via
     :meth:`~PyNutil.image_series.Section.get_image`.
 
-    Args:
-        image_series: Image series (from :func:`read_segmentation_dir`,
-            :func:`read_image_dir`, or constructed manually).
-        registration: Pre-loaded registration data.
-        pipeline_ctx: Immutable pipeline-wide state.
-        empty_result_factory: Callable returning a default empty result.
-        processing_fn: ``fn(p_ctx, s_ctx)`` — processes one section.
+    Parameters
+    ----------
+    image_series : ImageSeries
+        Image series (from :func:`read_segmentation_dir`,
+        :func:`read_image_dir`, or constructed manually).
+    registration : RegistrationData
+        Pre-loaded registration data.
+    pipeline_ctx : PipelineContext
+        Immutable pipeline-wide state.
+    empty_result_factory : callable
+        Callable returning a default empty result.
+    processing_fn : callable
+        ``fn(p_ctx, s_ctx)`` — processes one section.
 
-    Returns:
-        tuple: (filenames, results) where *results* is a list parallel to
-               *filenames*, each element being the Future's result.
+    Returns
+    -------
+    tuple
+        (filenames, results) where *results* is a list parallel to
+        *filenames*, each element being the Future's result.
     """
     slices_by_nr = {s.section_number: s for s in registration.slices}
     sections = list(image_series.sections.values())
@@ -445,8 +453,9 @@ def image_to_coords(
         Optional lower threshold. Intensities below this value are discarded.
     max_intensity
         Optional upper threshold. Intensities above this value are discarded.
-    return_orientation: 3-letter BrainGlobe orientation string (e.g. "asr",
-            "ras"). Defaults to "asr" (internal orientation).
+    return_orientation : str, optional
+        3-letter BrainGlobe orientation string (e.g. "asr", "ras").
+        Defaults to "asr" (internal orientation).
 
     Returns
     -------
@@ -556,8 +565,9 @@ def xy_to_coords(
     atlas
         Atlas definition to use for labeling. This may be an
         :class:`~PyNutil.AtlasData` instance or a BrainGlobe atlas object.
-    return_orientation: 3-letter BrainGlobe orientation string (e.g. "asr",
-            "ras"). Defaults to "asr" (internal orientation).
+    return_orientation : str, optional
+        3-letter BrainGlobe orientation string (e.g. "asr", "ras").
+        Defaults to "asr" (internal orientation).
 
     Returns
     -------

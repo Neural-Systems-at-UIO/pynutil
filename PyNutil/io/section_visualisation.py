@@ -23,16 +23,14 @@ def _build_color_lookup(
 ) -> Tuple[str, Union[np.ndarray, Tuple[np.ndarray, np.ndarray]], Tuple[int, int, int]]:
     """Build a fast color lookup for atlas IDs.
 
-    Returns:
-        (mode, lookup, default_colour)
-
-    mode:
-        - "direct": lookup is a (max_id+1, 3) uint8 LUT; index directly by atlas ID
-        - "sorted": lookup is (ids_sorted, rgb_sorted); use searchsorted
-
-    This keeps behaviour consistent with the previous implementation:
-    - atlas id 0 maps to black
-    - unmapped ids map to grey (default_colour)
+    Returns
+    -------
+    tuple
+        (mode, lookup, default_colour) where *mode* is ``"direct"`` if
+        lookup is a (max_id+1, 3) uint8 LUT indexed directly by atlas ID,
+        or ``"sorted"`` if lookup is (ids_sorted, rgb_sorted) for use with
+        searchsorted. Atlas ID 0 maps to black; unmapped IDs map to
+        *default_colour*.
     """
     if atlas_labels is None or len(atlas_labels) == 0:
         lut = np.empty((2, 3), dtype=np.uint8)

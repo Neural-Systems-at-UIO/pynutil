@@ -160,19 +160,27 @@ def pixel_count_per_region(
     """
     Tally object counts by region, optionally tracking damage and hemispheres.
 
-    Args:
-        per_point_labels (ndarray): 1-D region labels for points.
-        per_centroid_labels (ndarray): 1-D region labels for centroids.
-        current_points_undamaged (ndarray or None): Undamaged-state flags for points,
-            or None when no damage mask was applied.
-        current_centroids_undamaged (ndarray or None): Undamaged-state flags for centroids,
-            or None when no damage mask was applied.
-        current_points_hemi (ndarray): Hemisphere tags for points.
-        current_centroids_hemi (ndarray): Hemisphere tags for centroids.
-        df_label_colours (DataFrame): Region label colors.
+    Parameters
+    ----------
+    per_point_labels : ndarray
+        1-D region labels for points.
+    per_centroid_labels : ndarray
+        1-D region labels for centroids.
+    current_points_undamaged : ndarray or None
+        Undamaged-state flags for points, or None when no damage mask was applied.
+    current_centroids_undamaged : ndarray or None
+        Undamaged-state flags for centroids, or None when no damage mask was applied.
+    current_points_hemi : ndarray
+        Hemisphere tags for points.
+    current_centroids_hemi : ndarray
+        Hemisphere tags for centroids.
+    df_label_colours : DataFrame
+        Region label colors.
 
-    Returns:
-        DataFrame: Summed counts per region.
+    Returns
+    -------
+    DataFrame
+        Summed counts per region.
     """
     with_damage = current_points_undamaged is not None
     # If hemisphere labels are present, they are integers (1/2). If absent, they are None.

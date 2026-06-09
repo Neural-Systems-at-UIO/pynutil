@@ -13,16 +13,24 @@ def assign_labels_at_coordinates(coords_y, coords_x, source_map, reg_height, reg
     (potentially smaller) *source_map* resolution, rounded, bounds-checked,
     and used to index *source_map*.
 
-    Args:
-        coords_y: 1-D array of Y coordinates in registration space.
-        coords_x: 1-D array of X coordinates in registration space.
-        source_map: 2-D array to sample from (e.g. atlas_map or hemi_mask).
-        reg_height: Registration image height.
-        reg_width: Registration image width.
+    Parameters
+    ----------
+    coords_y : ndarray
+        1-D array of Y coordinates in registration space.
+    coords_x : ndarray
+        1-D array of X coordinates in registration space.
+    source_map : ndarray
+        2-D array to sample from (e.g. atlas_map or hemi_mask).
+    reg_height : int
+        Registration image height.
+    reg_width : int
+        Registration image width.
 
-    Returns:
-        labels: 1-D array of looked-up values (same length as *coords_y*).
-               Out-of-bounds coordinates receive 0.
+    Returns
+    -------
+    ndarray
+        1-D array of looked-up values (same length as *coords_y*).
+        Out-of-bounds coordinates receive 0.
     """
     map_h, map_w = source_map.shape
     y_scale = (map_h - 1) / (reg_height - 1) if reg_height > 1 else 0.0
@@ -41,12 +49,18 @@ def assign_labels_at_coordinates(coords_y, coords_x, source_map, reg_height, reg
 def resize_mask_nearest(mask, width, height):
     """Resize a mask to (*height*, *width*) using nearest-neighbour interpolation.
 
-    Args:
-        mask: 2-D numpy array.
-        width: Target width (columns).
-        height: Target height (rows).
+    Parameters
+    ----------
+    mask : ndarray
+        2-D numpy array.
+    width : int
+        Target width (columns).
+    height : int
+        Target height (rows).
 
-    Returns:
+    Returns
+    -------
+    ndarray
         Resized array with the same dtype as *mask* (bool masks are preserved).
     """
     is_bool = mask.dtype == bool
@@ -64,11 +78,16 @@ def reindex_to_atlas(df, atlas_labels):
     Rows not present in *df* are filled with NaN (typically followed by
     ``fillna(0)`` by the caller).
 
-    Args:
-        df: DataFrame with an ``"idx"`` column.
-        atlas_labels: Atlas labels DataFrame with an ``"idx"`` column.
+    Parameters
+    ----------
+    df : DataFrame
+        DataFrame with an ``"idx"`` column.
+    atlas_labels : DataFrame
+        Atlas labels DataFrame with an ``"idx"`` column.
 
-    Returns:
+    Returns
+    -------
+    DataFrame
         DataFrame reindexed to match *atlas_labels["idx"]*.
     """
     # Preserve non-atlas rows (e.g. out_of_atlas) before reindexing.
@@ -138,12 +157,17 @@ def convert_to_intensity(image, channel):
     """
     Converts an image to an intensity map based on the specified channel.
 
-    Args:
-        image (ndarray): Input image (BGR or grayscale).
-        channel (str): Channel to extract ('R', 'G', 'B', 'grayscale', 'auto').
+    Parameters
+    ----------
+    image : ndarray
+        Input image (BGR or grayscale).
+    channel : str
+        Channel to extract ('R', 'G', 'B', 'grayscale', 'auto').
 
-    Returns:
-        ndarray: Intensity map as float32.
+    Returns
+    -------
+    ndarray
+        Intensity map as float32.
     """
     if image.ndim == 2:
         return image.astype(np.float32)
@@ -160,14 +184,20 @@ _IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".dzip"}
 def discover_image_files(folder):
     """Discover image files in *folder* (case-insensitive, sorted, no dirs).
 
-    Args:
-        folder (str): Path to the folder containing images.
+    Parameters
+    ----------
+    folder : str
+        Path to the folder containing images.
 
-    Returns:
-        list: Sorted list of image file paths.
+    Returns
+    -------
+    list
+        Sorted list of image file paths.
 
-    Raises:
-        ValueError: If no image files are found.
+    Raises
+    ------
+    ValueError
+        If no image files are found.
     """
     paths = [
         os.path.join(folder, name)

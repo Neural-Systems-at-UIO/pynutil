@@ -34,11 +34,16 @@ from .utils import resize_mask_nearest
 def _compute_slice_coordinates(ouv, ref_shape):
     """Compute 2D-to-3D index arrays for a given anchoring vector.
 
-    Args:
-        ouv (list): Orientation vector [ox, oy, oz, ux, uy, uz, vx, vy, vz].
-        ref_shape (tuple): Shape of the reference 3D volume (xdim, ydim, zdim).
+    Parameters
+    ----------
+    ouv : list
+        Orientation vector [ox, oy, oz, ux, uy, uz, vx, vy, vz].
+    ref_shape : tuple
+        Shape of the reference 3D volume (xdim, ydim, zdim).
 
-    Returns:
+    Returns
+    -------
+    tuple
         (lx, ly, lz, valid, height, width) — index arrays and validity mask.
     """
     ox, oy, oz, ux, uy, uz, vx, vy, vz = ouv
@@ -64,12 +69,17 @@ def _compute_slice_coordinates(ouv, ref_shape):
 def generate_target_slice(ouv, atlas):
     """Generate a 2D slice from a 3D atlas based on orientation vectors.
 
-    Args:
-        ouv (list): Orientation vector [ox, oy, oz, ux, uy, uz, vx, vy, vz].
-        atlas (ndarray): 3D atlas volume.
+    Parameters
+    ----------
+    ouv : list
+        Orientation vector [ox, oy, oz, ux, uy, uz, vx, vy, vz].
+    atlas : ndarray
+        3D atlas volume.
 
-    Returns:
-        ndarray: 2D slice extracted from the atlas.
+    Returns
+    -------
+    ndarray
+        2D slice extracted from the atlas.
     """
     lx, ly, lz, valid, height, width = _compute_slice_coordinates(ouv, atlas.shape)
     data_im = np.zeros((height, width), dtype=np.uint32)
@@ -84,12 +94,17 @@ def generate_target_slices(ouv, *volumes):
     once and reused for every volume, saving ~50% of the work compared to
     calling :func:`generate_target_slice` separately for each volume.
 
-    Args:
-        ouv (list): Orientation vector [ox, oy, oz, ux, uy, uz, vx, vy, vz].
-        *volumes: One or more 3D ndarrays with identical shape.
+    Parameters
+    ----------
+    ouv : list
+        Orientation vector [ox, oy, oz, ux, uy, uz, vx, vy, vz].
+    *volumes : ndarray
+        One or more 3D ndarrays with identical shape.
 
-    Returns:
-        tuple of ndarrays: One 2D slice per input volume.
+    Returns
+    -------
+    tuple of ndarray
+        One 2D slice per input volume.
     """
     ref_shape = volumes[0].shape
     lx, ly, lz, valid, height, width = _compute_slice_coordinates(ouv, ref_shape)
@@ -115,13 +130,19 @@ def compute_deformation_map(image_shape, deformation, rescaleXY):
     shape with :func:`apply_deformation_map`, avoiding redundant calls
     to the (expensive) deformation function.
 
-    Args:
-        image_shape (tuple): (height, width) of the source image.
-        deformation (callable): Deformation function (x, y) → (new_x, new_y).
-        rescaleXY (tuple or None): (width, height) for rescaling.
+    Parameters
+    ----------
+    image_shape : tuple
+        (height, width) of the source image.
+    deformation : callable
+        Deformation function (x, y) → (new_x, new_y).
+    rescaleXY : tuple or None
+        (width, height) for rescaling.
 
-    Returns:
-        tuple: (newY, newX, oob) — int32 index arrays and out-of-bounds mask.
+    Returns
+    -------
+    tuple
+        (newY, newX, oob) — int32 index arrays and out-of-bounds mask.
     """
     reg_h, reg_w = image_shape
     if rescaleXY is not None:
@@ -144,12 +165,17 @@ def compute_deformation_map(image_shape, deformation, rescaleXY):
 def apply_deformation_map(image, deform_map):
     """Warp *image* using a precomputed deformation map.
 
-    Args:
-        image (ndarray): 2D image to warp (same shape used to create the map).
-        deform_map (tuple): (newY, newX, oob) from :func:`compute_deformation_map`.
+    Parameters
+    ----------
+    image : ndarray
+        2D image to warp (same shape used to create the map).
+    deform_map : tuple
+        (newY, newX, oob) from :func:`compute_deformation_map`.
 
-    Returns:
-        ndarray: Warped image.
+    Returns
+    -------
+    ndarray
+        Warped image.
     """
     newY, newX, oob = deform_map
     new_image = image[newY, newX]
@@ -160,14 +186,19 @@ def apply_deformation_map(image, deform_map):
 def warp_image(image, deformation, rescaleXY):
     """Warp an image using a deformation function, applying optional resizing.
 
-    Args:
-        image (ndarray): Image array to be warped.
-        deformation (callable): Deformation function that takes (x, y) arrays
-            and returns (new_x, new_y) arrays.
-        rescaleXY (tuple, optional): (width, height) for resizing.
+    Parameters
+    ----------
+    image : ndarray
+        Image array to be warped.
+    deformation : callable
+        Deformation function that takes (x, y) arrays and returns (new_x, new_y) arrays.
+    rescaleXY : tuple, optional
+        (width, height) for resizing.
 
-    Returns:
-        ndarray: The warped image array.
+    Returns
+    -------
+    ndarray
+        The warped image array.
     """
     deform_map = compute_deformation_map(image.shape, deformation, rescaleXY)
     return apply_deformation_map(image, deform_map)
@@ -213,19 +244,26 @@ def load_atlas_image(
 ):
     """Generate a 2D atlas slice from a 3D atlas volume, optionally warping it.
 
-    Args:
-        image_vector (ndarray): Anchoring vector used to extract the 2D slice.
-        volume (ndarray): Atlas volume to sample from.
-        deformation (callable or None): Deformation function for warping.
-        rescaleXY (tuple): (width, height) for resizing.
-        deform_map (tuple, optional): Precomputed deformation map from
-            :func:`compute_deformation_map`. If provided, used instead of
-            calling *deformation* again.
-        precomputed_slice (ndarray, optional): Already-extracted 2D slice.
-            Skips :func:`generate_target_slice` when provided.
+    Parameters
+    ----------
+    image_vector : ndarray
+        Anchoring vector used to extract the 2D slice.
+    volume : ndarray
+        Atlas volume to sample from.
+    deformation : callable or None
+        Deformation function for warping.
+    rescaleXY : tuple
+        (width, height) for resizing.
+    deform_map : tuple, optional
+        Precomputed deformation map from :func:`compute_deformation_map`.
+        If provided, used instead of calling *deformation* again.
+    precomputed_slice : ndarray, optional
+        Already-extracted 2D slice. Skips :func:`generate_target_slice` when provided.
 
-    Returns:
-        ndarray: The generated or warped atlas slice.
+    Returns
+    -------
+    ndarray
+        The generated or warped atlas slice.
     """
     if precomputed_slice is not None:
         image = np.float64(precomputed_slice)
@@ -250,14 +288,21 @@ def flat_to_dataframe(image, damage_mask, hemi_mask, rescaleXY=None):
     all (label × hemi × damage) combinations at once, instead of calling
     ``np.unique`` separately for each combo.
 
-    Args:
-        image (ndarray): Source image with label IDs.
-        damage_mask (ndarray): Binary mask indicating damaged areas.
-        hemi_mask (ndarray): Binary mask for hemisphere assignment.
-        rescaleXY (tuple, optional): (width, height) for resizing.
+    Parameters
+    ----------
+    image : ndarray
+        Source image with label IDs.
+    damage_mask : ndarray
+        Binary mask indicating damaged areas.
+    hemi_mask : ndarray
+        Binary mask for hemisphere assignment.
+    rescaleXY : tuple, optional
+        (width, height) for resizing.
 
-    Returns:
-        DataFrame: Pixel counts grouped by label.
+    Returns
+    -------
+    DataFrame
+        Pixel counts grouped by label.
     """
     scale_factor = (
         (rescaleXY[0] * rescaleXY[1]) / (image.shape[0] * image.shape[1])
@@ -361,13 +406,19 @@ def transform_to_atlas_space(
     Uses the QuickNII anchoring vector to apply the affine:
         atlas_coord = O + (x/width) * U + (y/height) * V
 
-    Args:
-        slice_info: SliceInfo with `anchoring` (9-element vector), `height`,
-            and `width` for the registration image.
-        y: Y coordinates in registration space.
-        x: X coordinates in registration space.
+    Parameters
+    ----------
+    slice_info : SliceInfo
+        SliceInfo with ``anchoring`` (9-element vector), ``height``,
+        and ``width`` for the registration image.
+    y : ndarray
+        Y coordinates in registration space.
+    x : ndarray
+        X coordinates in registration space.
 
-    Returns:
+    Returns
+    -------
+    ndarray
         (N, 3) array of 3-D atlas-space coordinates.
     """
     # NOTE: This implementation intentionally avoids building intermediate arrays via

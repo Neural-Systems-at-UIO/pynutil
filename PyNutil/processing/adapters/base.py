@@ -154,11 +154,15 @@ class DeformationProvider(ABC):
     def apply(self, data: RegistrationData) -> RegistrationData:
         """Add deformation functions to all slices.
 
-        Args:
-            data: RegistrationData with basic anchoring.
+        Parameters
+        ----------
+        data : RegistrationData
+            With basic anchoring.
 
-        Returns:
-            RegistrationData with deformation functions added.
+        Returns
+        -------
+        RegistrationData
+            With deformation functions added.
         """
         pass
 
@@ -177,10 +181,14 @@ class DamageProvider(ABC):
     def apply(self, data: RegistrationData) -> RegistrationData:
         """Add damage masks to all slices.
 
-        Args:
-            data: RegistrationData (may already have deformation).
+        Parameters
+        ----------
+        data : RegistrationData
+            May already have deformation.
 
-        Returns:
-            RegistrationData with damage masks added.
+        Returns
+        -------
+        RegistrationData
+            With damage masks added.
         """
         pass
