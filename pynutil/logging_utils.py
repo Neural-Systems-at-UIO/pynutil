@@ -1,6 +1,6 @@
-"""Logging configuration utilities for PyNutil.
+"""Logging configuration utilities for pynutil.
 
-This module provides centralized logging setup, extracted from the PyNutil class
+This module provides centralized logging setup, extracted from the pynutil class
 to follow single-responsibility principle. Logging configuration should happen
 at the application level, not inside data processing classes.
 """
@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Optional, Union
 
 
-# Module-level logger for PyNutil
+# Module-level logger for pynutil
 _pynutil_logger: Optional[logging.Logger] = None
 
 
@@ -23,10 +23,10 @@ def configure_logging(
     console_level: int = logging.INFO,
     log_format: str = "%(asctime)s %(levelname)s %(name)s: %(message)s",
 ) -> logging.Logger:
-    """Configure logging for PyNutil.
+    """Configure logging for pynutil.
 
     This function sets up both file and console logging handlers for the
-    PyNutil logger. It should be called once at application startup.
+    pynutil logger. It should be called once at application startup.
 
     Parameters
     ----------
@@ -47,13 +47,13 @@ def configure_logging(
 
     Examples
     --------
-    >>> from PyNutil.logging_utils import configure_logging
+    >>> from pynutil.logging_utils import configure_logging
     >>> logger = configure_logging(log_file="my_analysis.log")
     >>> logger.info("Starting analysis...")
     """
     global _pynutil_logger
 
-    logger = logging.getLogger("PyNutil")
+    logger = logging.getLogger("pynutil")
     logger.setLevel(logging.DEBUG)
 
     # Avoid adding handlers multiple times

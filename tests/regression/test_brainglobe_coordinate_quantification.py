@@ -20,7 +20,7 @@ import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from PyNutil import save_analysis
+from pynutil import save_analysis
 
 from timing_utils import TimedTestCase
 from test_helpers import run_pipeline_from_settings

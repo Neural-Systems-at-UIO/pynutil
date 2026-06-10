@@ -2,7 +2,7 @@ import json
 import os
 import unittest
 import numpy as np
-from PyNutil import interpolate_volume, save_analysis, read_segmentation_dir
+from pynutil import interpolate_volume, save_analysis, read_segmentation_dir
 from test_helpers import run_pipeline_from_settings_file, small_volume_scale, load_atlas_from_settings
 
 try:
@@ -97,7 +97,7 @@ class TestDamageVolumeInterpolation(TimedTestCase):
             damage_nifti_path = os.path.join(tmpdir, "interpolated_volume", "damage_volume.nii.gz")
             # Note: save_analysis does not save volume niftis; the damage volume
             # persistence test needs save_volumes for that.
-            from PyNutil import save_volumes
+            from pynutil import save_volumes
             save_volumes(
                 output_folder=tmpdir,
                 volumes=volumes,

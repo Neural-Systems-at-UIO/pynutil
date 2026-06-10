@@ -6,7 +6,7 @@ import numpy as np
 
 @dataclass
 class VolumeResult:
-    """Volumes returned by :func:`~PyNutil.interpolate_volume`.
+    """Volumes returned by :func:`~pynutil.interpolate_volume`.
 
     Attributes
     ----------

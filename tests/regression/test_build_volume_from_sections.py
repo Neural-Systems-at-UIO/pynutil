@@ -7,8 +7,8 @@ import unittest
 import numpy as np
 import nibabel as nib
 
-from PyNutil import save_analysis, interpolate_volume, read_segmentation_dir
-from PyNutil.io.volume_nifti import scale_to_uint8
+from pynutil import save_analysis, interpolate_volume, read_segmentation_dir
+from pynutil.io.volume_nifti import scale_to_uint8
 from test_helpers import copy_tree_to_demo, small_volume_scale, run_pipeline_from_settings
 try:
     # When run via `python -m unittest discover` from repo root

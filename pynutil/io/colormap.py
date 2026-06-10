@@ -1,4 +1,4 @@
-"""Colormap utilities for PyNutil.
+"""Colormap utilities for pynutil.
 
 This module provides simple colormap implementations for mapping
 intensity values to RGB colors, avoiding matplotlib dependency.

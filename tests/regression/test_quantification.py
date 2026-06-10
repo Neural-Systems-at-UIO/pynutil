@@ -1,12 +1,10 @@
 import unittest
 import os
-import sys
 import warnings
 
-sys.path.append(os.path.abspath("/home/harryc/github/PyNutil/"))
 import numpy as np
 import pandas as pd
-from PyNutil import save_analysis
+from pynutil import save_analysis
 import json
 
 from timing_utils import TimedTestCase

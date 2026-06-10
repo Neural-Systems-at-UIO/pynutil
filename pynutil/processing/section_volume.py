@@ -418,15 +418,15 @@ def interpolate_volume(
     Parameters
     ----------
     image_series
-        :class:`~PyNutil.ImageSeries` containing the sections to project.
-        Build one with :func:`~PyNutil.read_segmentation_dir` or
-        :func:`~PyNutil.read_image_dir`.
+        :class:`~pynutil.ImageSeries` containing the sections to project.
+        Build one with :func:`~pynutil.read_segmentation_dir` or
+        :func:`~pynutil.read_image_dir`.
     registration
-        :class:`~PyNutil.processing.adapters.base.RegistrationData` loaded
-        with :func:`~PyNutil.read_alignment`.
+        :class:`~pynutil.processing.adapters.base.RegistrationData` loaded
+        with :func:`~pynutil.read_alignment`.
     atlas
         Atlas definition used to determine the target volume shape. This may
-        be a BrainGlobe atlas object or :class:`~PyNutil.AtlasData`.
+        be a BrainGlobe atlas object or :class:`~pynutil.AtlasData`.
     scale
         Isotropic scaling factor applied to the atlas output shape.
     missing_fill
@@ -459,7 +459,7 @@ def interpolate_volume(
     Returns
     -------
     VolumeResult
-        A :class:`~PyNutil.VolumeResult` with ``value`` (the requested metric
+        A :class:`~pynutil.VolumeResult` with ``value`` (the requested metric
         volume), ``frequency`` (per-voxel sample count), and ``damage`` (binary
         damage mask).
 

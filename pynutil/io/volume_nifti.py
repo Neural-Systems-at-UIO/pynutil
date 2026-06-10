@@ -73,11 +73,11 @@ def save_volumes(
         Base output directory where the ``interpolated_volume`` subdirectory
         will be created.
     volumes
-        :class:`~PyNutil.VolumeResult` returned by
-        :func:`~PyNutil.interpolate_volume`.
+        :class:`~pynutil.VolumeResult` returned by
+        :func:`~pynutil.interpolate_volume`.
     atlas
         Atlas definition used to infer isotropic voxel spacing. Accepts a
-        BrainGlobe atlas object or :class:`~PyNutil.AtlasData`.
+        BrainGlobe atlas object or :class:`~pynutil.AtlasData`.
     logger
         Optional logger used to report non-uniform output scaling.
 
@@ -88,7 +88,7 @@ def save_volumes(
 
     Examples
     --------
-    Save the volumes returned by :func:`PyNutil.interpolate_volume`:
+    Save the volumes returned by :func:`pynutil.interpolate_volume`:
 
     >>> image_series = read_segmentation_dir("path/to/segmentations/", pixel_id=[0, 0, 0])
     >>> registration = read_alignment("path/to/alignment.json")

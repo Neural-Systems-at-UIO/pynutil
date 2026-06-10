@@ -7,8 +7,8 @@ import cv2
 import numpy as np
 from brainglobe_atlasapi import BrainGlobeAtlas
 
-from PyNutil import read_alignment, read_segmentation_dir, seg_to_coords
-from PyNutil.io.atlas_loader import resolve_atlas
+from pynutil import read_alignment, read_segmentation_dir, seg_to_coords
+from pynutil.io.atlas_loader import resolve_atlas
 from timing_utils import TimedTestCase
 
 
@@ -56,8 +56,8 @@ class TestVisualisations(TimedTestCase):
             )
             result = seg_to_coords(segmentations, alignment, atlas)
 
-            from PyNutil.processing.adapters.segmentation import SegmentationAdapterRegistry
-            from PyNutil.io.section_visualisation import create_section_visualisations
+            from pynutil.processing.adapters.segmentation import SegmentationAdapterRegistry
+            from pynutil.io.section_visualisation import create_section_visualisations
 
             reg_data = read_alignment(
                 settings["alignment_json"], apply_deformation=False, apply_damage=False

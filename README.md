@@ -1,32 +1,32 @@
-# PyNutil
+# pynutil
 
-> [!WARNING]  
-> PyNutil is still under development and the API is subject to change.
+> [!WARNING]
+> pynutil is still under development and the API is subject to change.
 
 
-PyNutil is a Python library for brain-wide quantification and spatial analysis of features in serial section images from the brain. It aims to replicate the Quantifier feature of the Nutil software (RRID: SCR_017183). 
+pynutil is a Python library for brain-wide quantification and spatial analysis of features in serial section images from the brain. It aims to replicate the Quantifier feature of the Nutil software (RRID: SCR_017183).
 
-PyNutil is able to integrate outputs from atlas registration software and image segmentation software in order to produce atlas based quantifications, 3D point clouds, and 3D heatmaps of brain derived data. 
-![alt text](docs/assets/PyNutil_fig1.png)
+pynutil is able to integrate outputs from atlas registration software and image segmentation software in order to produce atlas based quantifications, 3D point clouds, and 3D heatmaps of brain derived data.
+![alt text](docs/assets/pynutil_fig1.png)
 
 For more information about the QUINT workflow:
-https://quint-workflow.readthedocs.io/en/latest/ 
+https://quint-workflow.readthedocs.io/en/latest/
 
 # Available Atlases
 
-PyNutil can be run using a custom atlas in .nrrd format (e.g. tests/test_data/Allen_mouse_2017_atlas)  
+pynutil can be run using a custom atlas in .nrrd format (e.g. tests/test_data/Allen_mouse_2017_atlas)
 
-PyNutil can also be used with the atlases available in the [BrainGlobe_Atlas API](https://GitHub.com/brainglobe/brainglobe-atlasapi). 
+pynutil can also be used with the atlases available in the [BrainGlobe_Atlas API](https://GitHub.com/brainglobe/brainglobe-atlasapi).
 
 # Installation
 ## Python package
 ```
-pip install PyNutil 
+pip install pynutil
 ```
 
 ## Running demos
 
-The scripts in `demos/` assume PyNutil is importable as an installed package.
+The scripts in `demos/` assume pynutil is importable as an installed package.
 For development, install in editable mode from the repository root:
 
 ```bash
@@ -39,16 +39,16 @@ download the executable for Windows and macOS via the [GitHub releases tab](http
 
 # Usage
 
-PyNutil requires Python 3.8 or above.
+pynutil requires Python 3.8 or above.
 
-As input, PyNutil requires:
+As input, pynutil requires:
 1. An atlas
 2. A corresponding alignment JSON created with the QuickNII or VisuAlign software.
 3. A segmentation file for each brain section with the features to be quantified displayed with a unique RGB colour code (it currently accepts many image formats: png, jpg, jpeg, etc).
 
 ```python
 from brainglobe_atlasapi import BrainGlobeAtlas
-import PyNutil as pnt
+import pynutil as pnt
 
 # Load an atlas (BrainGlobe) and alignment
 atlas = BrainGlobeAtlas("allen_mouse_25um")
@@ -72,20 +72,20 @@ pnt.save_analysis("path/to/output", coords, atlas, label_df=label_df)
 
 For custom atlases (not from BrainGlobe), use `pnt.load_custom_atlas()` instead.
 See `demos/basic_example.py` and `demos/basic_example_custom_atlas.py` for complete examples.
-PyNutil generates a series of reports in the folder which you specify.
+pynutil generates a series of reports in the folder which you specify.
 
 ## Per-Hemisphere Quantification
-If you use an atlas which has a hemisphere map (All brainglobe atlases have this, it is a volume in the shape of the atlas with 1 in the left hemisphere and 2 in the right) PyNutil will generate per-hemisphere quantifications in addition to total numbers. In addition, PyNutil will also genearte additional per-hemisphere point cloud files for viewing in meshview.
+If you use an atlas which has a hemisphere map (All brainglobe atlases have this, it is a volume in the shape of the atlas with 1 in the left hemisphere and 2 in the right) pynutil will generate per-hemisphere quantifications in addition to total numbers. In addition, pynutil will also genearte additional per-hemisphere point cloud files for viewing in meshview.
 ## Damage Quantification
-[The QCAlign tool](https://www.nitrc.org/projects/qcalign) allows you to mark damaged areas on your section. This means that these damaged areas are excluded from your point clouds. In addition, PyNutil will separately quantify damaged and undamaged areas. Note the undamaged and damaged column names. 
+[The QCAlign tool](https://www.nitrc.org/projects/qcalign) allows you to mark damaged areas on your section. This means that these damaged areas are excluded from your point clouds. In addition, pynutil will separately quantify damaged and undamaged areas. Note the undamaged and damaged column names.
 # Meshview json files
-PyNutil will produce meshview json files. These can be opened in [MeshView for the Allen Mouse](https://meshview.apps.ebrains.eu/?atlas=ABA_Mouse_CCFv3_2017_25um) or for [the Waxholm Rat](https://meshview.apps.ebrains.eu/)
+pynutil will produce meshview json files. These can be opened in [MeshView for the Allen Mouse](https://meshview.apps.ebrains.eu/?atlas=ABA_Mouse_CCFv3_2017_25um) or for [the Waxholm Rat](https://meshview.apps.ebrains.eu/)
 
-https://github.com/user-attachments/assets/d3a43ca9-133e-40d1-a1b9-9a359deabf2d 
+https://github.com/user-attachments/assets/d3a43ca9-133e-40d1-a1b9-9a359deabf2d
 
 
 # Siibra explorer compatible NifTI  files
-If you have interpolated your volume you will find an interpolated NifTI volume in your output directory. This can be dragged and dropped directly into [siibra explorer](https://atlases.ebrains.eu/viewer/#/). If you share your data you can also include a shareable link to your data in the Siibra viewer. These files are also viewable in [ITK-SNAP](https://github.com/pyushkevich/itksnap). 
+If you have interpolated your volume you will find an interpolated NifTI volume in your output directory. This can be dragged and dropped directly into [siibra explorer](https://atlases.ebrains.eu/viewer/#/). If you share your data you can also include a shareable link to your data in the Siibra viewer. These files are also viewable in [ITK-SNAP](https://github.com/pyushkevich/itksnap).
 
 
 
@@ -117,10 +117,10 @@ If you choose to measure the intensity of images rather than segmentations you w
 | Sum intensity | The sum of all image pixels in a region.                                            |
 | Mean inensity | The mean of all image pixels in a region.                                           |
  # Feature Requests
-We are open to feature requests 😊 Simply open an issue in the GitHub describing the feature you would like to see. 
+We are open to feature requests 😊 Simply open an issue in the GitHub describing the feature you would like to see.
 
 # Acknowledgements
-PyNutil is developed at the Neural Systems Laboratory at the Institute of Basic Medical Sciences, University of Oslo, Norway with support from the EBRAINS infrastructure, and funding support from the European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Framework Partnership Agreement No. 650003 (HBP FPA).
+pynutil is developed at the Neural Systems Laboratory at the Institute of Basic Medical Sciences, University of Oslo, Norway with support from the EBRAINS infrastructure, and funding support from the European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Framework Partnership Agreement No. 650003 (HBP FPA).
 
 # Contributors
 Harry Carey, Sharon C Yates, Gergely Csucs, Arda Balkir, Ingvild Bjerke, Rembrandt Bakker, Nicolaas Groeneboom, Maja A Puchades, Jan G Bjaalie.

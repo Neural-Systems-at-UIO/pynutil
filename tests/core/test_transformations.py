@@ -3,7 +3,7 @@ import types
 
 import numpy as np
 
-from PyNutil.processing.atlas_map import transform_to_atlas_space
+from pynutil.processing.atlas_map import transform_to_atlas_space
 
 
 class TestTransformations(unittest.TestCase):

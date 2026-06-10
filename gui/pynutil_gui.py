@@ -43,14 +43,14 @@ from ui_components import (
 
 from settings_manager import SettingsManager
 from log_manager import LogManager
-from PyNutil.config import PyNutilConfig
-from PyNutil.io.loaders import load_json_file
+from pynutil.config import PynutilConfig
+from pynutil.io.loaders import load_json_file
 
 
-class PyNutilGUI(QMainWindow):
+class PynutilGUI(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("PyNutil")
+        self.setWindowTitle("pynutil")
 
         # Initialize managers
         settings_path = os.path.join(os.path.expanduser("~"), ".pynutil_recent_files.json")
@@ -63,7 +63,7 @@ class PyNutilGUI(QMainWindow):
         self.current_atlas_name = None
 
         # Set the application icon
-        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Logo_PyNutil.ico")
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo_pynutil.ico")
         if os.path.exists(icon_path):
             self.setWindowIcon(QIcon(icon_path))
 
@@ -113,7 +113,7 @@ class PyNutilGUI(QMainWindow):
         exit_action.triggered.connect(self.close)
         file_menu.addAction(exit_action)
 
-        about_action = QAction("About PyNutil", self)
+        about_action = QAction("About pynutil", self)
         about_action.triggered.connect(self.about_pynutil)
         help_menu.addAction(about_action)
 
@@ -320,7 +320,7 @@ class PyNutilGUI(QMainWindow):
         self.current_progress = ""
 
     def about_pynutil(self):
-        help_text = """PyNutil is a Python library for brain-wide quantification and spatial analysis of features in serial section images from mouse and rat brain. It aims to replicate the Quantifier feature of the Nutil software (RRID: SCR_017183). It builds on registration to a standardised reference atlas with the QuickNII (RRID:SCR_016854) and VisuAlign software (RRID:SCR_017978) and feature extraction by segmentation with an image analysis software such as ilastik (RRID:SCR_015246).
+        help_text = """pynutil is a Python library for brain-wide quantification and spatial analysis of features in serial section images from mouse and rat brain. It aims to replicate the Quantifier feature of the Nutil software (RRID: SCR_017183). It builds on registration to a standardised reference atlas with the QuickNII (RRID:SCR_016854) and VisuAlign software (RRID:SCR_017978) and feature extraction by segmentation with an image analysis software such as ilastik (RRID:SCR_015246).
 
 For more information about the QUINT workflow: <a href="https://quint-workflow.readthedocs.io/en/latest/">https://quint-workflow.readthedocs.io/en/latest/</a>"""
 
@@ -555,7 +555,7 @@ For more information about the QUINT workflow: <a href="https://quint-workflow.r
         try:
             settings = load_json_file(file_path)
 
-            config = PyNutilConfig.from_settings_file(file_path)
+            config = PynutilConfig.from_settings_file(file_path)
             config.normalize()
 
             if config.segmentation_folder:
@@ -766,6 +766,6 @@ For more information about the QUINT workflow: <a href="https://quint-workflow.r
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    gui = PyNutilGUI()
+    gui = PynutilGUI()
     gui.show()
     sys.exit(app.exec())

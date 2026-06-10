@@ -20,7 +20,7 @@ import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from PyNutil.processing.analysis.region_counting import (
+from pynutil.processing.analysis.region_counting import (
     _counts_for,
     pixel_count_per_region,
 )
@@ -165,7 +165,7 @@ class TestCellCountConservation(unittest.TestCase):
 
     def test_assign_labels_reports_background_count(self):
         """assign_labels_at_coordinates should let callers detect background cells."""
-        from PyNutil.processing.utils import assign_labels_at_coordinates
+        from pynutil.processing.utils import assign_labels_at_coordinates
 
         # 4x4 atlas map: center 2x2 is region 1, border is 0 (background)
         atlas_map = np.zeros((4, 4), dtype=np.int32)

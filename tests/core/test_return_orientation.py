@@ -7,7 +7,7 @@ import numpy as np
 
 from brainglobe_atlasapi import BrainGlobeAtlas
 
-from PyNutil import seg_to_coords, read_alignment, read_segmentation_dir
+from pynutil import seg_to_coords, read_alignment, read_segmentation_dir
 
 
 TEST_DIR = os.path.dirname(os.path.dirname(__file__))

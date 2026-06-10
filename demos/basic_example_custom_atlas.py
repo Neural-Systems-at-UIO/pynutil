@@ -1,8 +1,8 @@
 from pathlib import Path
 
-import PyNutil as pnt
+import pynutil as pnt
 
-# PyNutil is a toolkit for quantifying neuroscientific data using brain atlases.
+# pynutil is a toolkit for quantifying neuroscientific data using brain atlases.
 # This example uses a custom atlas (not BrainGlobe API).
 
 repo_root = Path(__file__).resolve().parents[1]

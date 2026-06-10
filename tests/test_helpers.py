@@ -4,7 +4,7 @@ import shutil
 
 from brainglobe_atlasapi import BrainGlobeAtlas
 
-from PyNutil import (
+from pynutil import (
     load_custom_atlas,
     read_alignment,
     read_segmentation_dir,
@@ -14,7 +14,7 @@ from PyNutil import (
     xy_to_coords,
     quantify_coords,
 )
-from PyNutil.io.atlas_loader import resolve_atlas
+from pynutil.io.atlas_loader import resolve_atlas
 def small_volume_scale(atlas_shape, target_max_dim: float = 80.0) -> float:
     sx, sy, sz = (int(x) for x in atlas_shape)
     max_dim = max(sx, sy, sz)

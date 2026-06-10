@@ -6,10 +6,10 @@ import json
 import pandas as pd
 from brainglobe_atlasapi import BrainGlobeAtlas
 
-# Add the root directory to sys.path to allow importing PyNutil
+# Add the root directory to sys.path to allow importing pynutil
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from PyNutil import read_alignment, read_image_dir, image_to_coords, quantify_coords, save_analysis
+from pynutil import read_alignment, read_image_dir, image_to_coords, quantify_coords, save_analysis
 from timing_utils import TimedTestCase
 
 class TestIntensityQuantification(TimedTestCase):

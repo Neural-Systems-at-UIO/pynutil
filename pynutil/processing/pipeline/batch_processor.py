@@ -51,7 +51,7 @@ def _run_batch_with_context(
 
     Handles thread-pool setup, per-section looping, and futures collection.
     Images are loaded lazily per section via
-    :meth:`~PyNutil.image_series.Section.get_image`.
+    :meth:`~pynutil.image_series.Section.get_image`.
 
     Args:
         image_series: Image series (from :func:`read_segmentation_dir`,
@@ -114,7 +114,7 @@ def read_segmentation_dir(
     pixel_id: Optional[Union[str, Sequence[int], np.ndarray]] = None,
     segmentation_format: str = "binary",
 ) -> ImageSeries:
-    """Discover segmentation image files in *folder* and return an :class:`~PyNutil.ImageSeries`.
+    """Discover segmentation image files in *folder* and return an :class:`~pynutil.ImageSeries`.
 
     Images are **not** loaded immediately — each section loads its image on
     demand when the pipeline processes it.
@@ -133,7 +133,7 @@ def read_segmentation_dir(
     Returns
     -------
     ImageSeries
-        One :class:`~PyNutil.Section` per discovered file, with
+        One :class:`~pynutil.Section` per discovered file, with
         ``section_number`` inferred from the filename and ``path`` set for
         lazy loading.
     """
@@ -152,7 +152,7 @@ def read_segmentation_dir(
 
 
 def read_image_dir(folder: Union[str, os.PathLike]) -> ImageSeries:
-    """Discover source image files in *folder* and return an :class:`~PyNutil.ImageSeries`.
+    """Discover source image files in *folder* and return an :class:`~pynutil.ImageSeries`.
 
     Images are **not** loaded immediately — each section loads its image on
     demand when the pipeline processes it.
@@ -165,7 +165,7 @@ def read_image_dir(folder: Union[str, os.PathLike]) -> ImageSeries:
     Returns
     -------
     ImageSeries
-        One :class:`~PyNutil.Section` per discovered file, with ``section_number``
+        One :class:`~pynutil.Section` per discovered file, with ``section_number``
         inferred from the filename and ``path`` set for lazy loading.
     """
     paths = discover_image_files(folder)
@@ -312,15 +312,15 @@ def seg_to_coords(
     Parameters
     ----------
     image_series
-        An :class:`~PyNutil.ImageSeries` produced by
-        :func:`~PyNutil.read_segmentation_dir`, or constructed manually for
+        An :class:`~pynutil.ImageSeries` produced by
+        :func:`~pynutil.read_segmentation_dir`, or constructed manually for
         custom segmentation types.  The series carries ``pixel_id`` and
         ``segmentation_format`` set at read time.
     registration
-        Registration data returned by :func:`PyNutil.read_alignment`.
+        Registration data returned by :func:`pynutil.read_alignment`.
     atlas
         Atlas definition to use for labeling. This may be an
-        :class:`~PyNutil.AtlasData` instance or a BrainGlobe atlas object.
+        :class:`~pynutil.AtlasData` instance or a BrainGlobe atlas object.
     object_cutoff
         Minimum object size to keep during segmentation processing.
 
@@ -382,7 +382,7 @@ def seg_to_coords(
     ) = _collect_section_results(results)
 
     if return_orientation != "lpi":
-        #LPI is the internal orientation assumed by PyNutil
+        #LPI is the internal orientation assumed by pynutil
         #we keep this consistent as different orientations
         #can cause small rounding differences which effect
         #the results. keeping everything LPI makes Pynutil
@@ -431,13 +431,13 @@ def image_to_coords(
     Parameters
     ----------
     image_series
-        An :class:`~PyNutil.ImageSeries` produced by
-        :func:`~PyNutil.read_image_dir`, or constructed manually.
+        An :class:`~pynutil.ImageSeries` produced by
+        :func:`~pynutil.read_image_dir`, or constructed manually.
     registration
-        Registration data returned by :func:`PyNutil.read_alignment`.
+        Registration data returned by :func:`pynutil.read_alignment`.
     atlas
         Atlas definition to use for labeling. This may be an
-        :class:`~PyNutil.AtlasData` instance or a BrainGlobe atlas object.
+        :class:`~pynutil.AtlasData` instance or a BrainGlobe atlas object.
     intensity_channel
         Image channel to convert to intensity values, such as
         ``"grayscale"``.
@@ -552,10 +552,10 @@ def xy_to_coords(
         metadata. Must contain the columns ``X``, ``Y``, ``image_width``,
         ``image_height``, and ``section number``.
     registration
-        Registration data returned by :func:`PyNutil.read_alignment`.
+        Registration data returned by :func:`pynutil.read_alignment`.
     atlas
         Atlas definition to use for labeling. This may be an
-        :class:`~PyNutil.AtlasData` instance or a BrainGlobe atlas object.
+        :class:`~pynutil.AtlasData` instance or a BrainGlobe atlas object.
     return_orientation: 3-letter BrainGlobe orientation string (e.g. "asr",
             "ras"). Defaults to "asr" (internal orientation).
 

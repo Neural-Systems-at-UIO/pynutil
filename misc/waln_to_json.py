@@ -2,7 +2,7 @@ import json
 import re
 import os
 
-from PyNutil.io.loaders import load_json_file
+from pynutil.io.loaders import load_json_file
 
 """
 Sharon Yates, 04.04.24.
@@ -44,4 +44,4 @@ def waln_to_json(filename):
         pass
 
 
-waln_to_json("PyNutil_test.waln")
+waln_to_json("pynutil_test.waln")

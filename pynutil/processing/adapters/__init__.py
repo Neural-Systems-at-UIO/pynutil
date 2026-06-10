@@ -10,7 +10,7 @@ The registration system uses a composable pipeline:
 - **Damage Providers**: Add damage/exclusion masks
 
 Example:
-    from PyNutil.processing.adapters import read_alignment
+    from pynutil.processing.adapters import read_alignment
 
     # Standard QUINT workflow
     data = read_alignment("alignment.json")

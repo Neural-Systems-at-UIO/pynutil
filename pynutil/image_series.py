@@ -1,7 +1,7 @@
 """Image series and section data containers.
 
 These classes represent a series of sections (images or segmentations) to be
-processed through the PyNutil pipeline.  Users with custom segmentation types
+processed through the pynutil pipeline.  Users with custom segmentation types
 can construct :class:`Section` and :class:`ImageSeries` objects directly,
 providing their own ``numpy`` arrays instead of reading from disk.
 """
@@ -26,7 +26,7 @@ class Section:
     section_number:
         Numeric identifier that must match a section in the alignment JSON.
     filename:
-        Display name used in :attr:`~PyNutil.ExtractionResult.section_filenames`.
+        Display name used in :attr:`~pynutil.ExtractionResult.section_filenames`.
         Defaults to *path* when not set explicitly.
     image:
         Pre-loaded image array (2-D or 3-D ``numpy`` array).  Provide this
@@ -47,7 +47,7 @@ class Section:
         Parameters
         ----------
         adapter:
-            A :class:`~PyNutil.processing.adapters.segmentation.SegmentationAdapter`
+            A :class:`~pynutil.processing.adapters.segmentation.SegmentationAdapter`
             used to load the file when *image* is ``None``.
         """
         if self.image is not None:
@@ -64,7 +64,7 @@ class ImageSeries:
     """An ordered collection of :class:`Section` objects.
 
     Construct this directly when you want to supply custom image data, or use
-    :func:`~PyNutil.read_segmentation_dir` / :func:`~PyNutil.read_image_dir`
+    :func:`~pynutil.read_segmentation_dir` / :func:`~pynutil.read_image_dir`
     to build one from a folder of image files.
 
     Parameters
@@ -73,12 +73,12 @@ class ImageSeries:
         Dictionary mapping ``section_number`` to :class:`Section` objects.
     pixel_id:
         RGB value (or label) identifying the segmented class of interest.
-        Set by :func:`~PyNutil.read_segmentation_dir` and consumed by
-        :func:`~PyNutil.seg_to_coords`.
+        Set by :func:`~pynutil.read_segmentation_dir` and consumed by
+        :func:`~pynutil.seg_to_coords`.
     segmentation_format:
         Name of the segmentation adapter to use (e.g. ``"binary"`` or
-        ``"cellpose"``).  Set by :func:`~PyNutil.read_segmentation_dir` and
-        consumed by :func:`~PyNutil.seg_to_coords`.
+        ``"cellpose"``).  Set by :func:`~pynutil.read_segmentation_dir` and
+        consumed by :func:`~pynutil.seg_to_coords`.
     """
 
     sections: Dict[int, Section] = field(default_factory=dict)

@@ -13,11 +13,11 @@ import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from PyNutil.processing.pipeline.section_processor import segmentation_to_atlas_space
-from PyNutil.processing.atlas_map import get_region_areas
-from PyNutil.processing.adapters import SliceInfo
-from PyNutil.processing.adapters.segmentation import SegmentationAdapterRegistry
-from PyNutil.context import PipelineContext, SectionContext
+from pynutil.processing.pipeline.section_processor import segmentation_to_atlas_space
+from pynutil.processing.atlas_map import get_region_areas
+from pynutil.processing.adapters import SliceInfo
+from pynutil.processing.adapters.segmentation import SegmentationAdapterRegistry
+from pynutil.context import PipelineContext, SectionContext
 
 
 class TestCoordinateScaling(TimedTestCase):
@@ -97,11 +97,11 @@ class TestCoordinateScaling(TimedTestCase):
 
             with (
                 patch(
-                    "PyNutil.processing.pipeline.section_processor.get_region_areas",
+                    "pynutil.processing.pipeline.section_processor.get_region_areas",
                     side_effect=_fake_get_region_areas,
                 ),
                 patch(
-                    "PyNutil.processing.pipeline.section_processor.get_objects_and_assign_regions",
+                    "pynutil.processing.pipeline.section_processor.get_objects_and_assign_regions",
                     side_effect=_fake_get_objects,
                 ),
             ):
@@ -163,15 +163,15 @@ class TestCoordinateScaling(TimedTestCase):
 
         with (
             patch(
-                "PyNutil.processing.atlas_map.generate_target_slice",
+                "pynutil.processing.atlas_map.generate_target_slice",
                 side_effect=_fake_generate_target_slice,
             ),
             patch(
-                "PyNutil.processing.atlas_map.warp_image",
+                "pynutil.processing.atlas_map.warp_image",
                 side_effect=_fake_warp_image,
             ),
             patch(
-                "PyNutil.processing.atlas_map.flat_to_dataframe",
+                "pynutil.processing.atlas_map.flat_to_dataframe",
                 side_effect=_fake_flat_to_dataframe,
             ),
         ):

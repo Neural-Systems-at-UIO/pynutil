@@ -27,18 +27,18 @@ jobs:
         pip install ".[gui]"
     - name: Build with PyInstaller
       run: |
-        pyinstaller --windowed --icon=gui/Logo_PyNutil.ico --name PyNutil gui/PyNutilGUI.py
+        pyinstaller --windowed --icon=gui/logo_pynutil.ico --name pynutil gui/pynutil_gui.py
         
     - name: Create Windows ZIP archive
       run: |
         cd dist
-        powershell Compress-Archive -Path PyNutil -DestinationPath PyNutil-Windows.zip
+        powershell Compress-Archive -Path pynutil -DestinationPath pynutil-Windows.zip
         
     - name: Upload Windows artifact
       uses: actions/upload-artifact@v4
       with:
-        name: PyNutil-Windows
-        path: dist/PyNutil-Windows.zip
+        name: pynutil-Windows
+        path: dist/pynutil-Windows.zip
         retention-days: 5
 
   build-macos:
@@ -60,14 +60,14 @@ jobs:
     - name: Build with PyInstaller
       run: |
         # Build without specifying an icon for macOS to avoid format issues
-        pyinstaller --windowed --osx-bundle-identifier com.pynutil.app --name PyNutil gui/PyNutilGUI.py
+        pyinstaller --windowed --osx-bundle-identifier com.pynutil.app --name pynutil gui/pynutil_gui.py
         
     - name: Create DMG
       run: |
         pip install dmgbuild
         cat > dmg_settings.py << EOF
-        app = 'dist/PyNutil.app'
-        appname = 'PyNutil'
+        app = 'dist/pynutil.app'
+        appname = 'pynutil'
         format = 'UDBZ'
         size = '500M'
         files = [app]
@@ -79,13 +79,13 @@ jobs:
         }
         background = 'builtin-arrow'
         EOF
-        dmgbuild -s dmg_settings.py "PyNutil" "dist/PyNutil-macOS.dmg" || true
+        dmgbuild -s dmg_settings.py "pynutil" "dist/pynutil-macOS.dmg" || true
         
     - name: Upload DMG artifact
       uses: actions/upload-artifact@v4
       with:
-        name: PyNutil-macOS
-        path: dist/PyNutil-macOS.dmg
+        name: pynutil-macOS
+        path: dist/pynutil-macOS.dmg
         retention-days: 5
 
   create-release:
@@ -105,6 +105,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            PyNutil-Windows/PyNutil-Windows.zip
-            PyNutil-macOS/PyNutil-macOS.dmg
+            pynutil-Windows/pynutil-Windows.zip
+            pynutil-macOS/pynutil-macOS.dmg
           token: ${{ github.token }}

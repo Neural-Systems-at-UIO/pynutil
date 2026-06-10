@@ -1,4 +1,4 @@
-"""Headless smoke test for PyNutil GUI.
+"""Headless smoke test for pynutil GUI.
 Launches the main window in offscreen mode and exits after a short delay.
 """
 import os
@@ -15,12 +15,12 @@ repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
-from PyNutilGUI import PyNutilGUI
+from pynutil_gui import PynutilGUI
 
 
 def main():
     app = QApplication(sys.argv)
-    gui = PyNutilGUI()
+    gui = PynutilGUI()
     gui.show()
 
     # Quit after 800ms

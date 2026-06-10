@@ -4,7 +4,7 @@ from typing import Any, Dict
 from brainglobe_atlasapi import BrainGlobeAtlas
 from PyQt6.QtCore import QThread, pyqtSignal
 from log_manager import TextRedirector
-from PyNutil import (
+from pynutil import (
     load_custom_atlas,
     read_alignment,
     read_segmentation_dir,

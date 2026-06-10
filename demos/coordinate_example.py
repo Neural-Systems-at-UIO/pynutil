@@ -1,8 +1,8 @@
 """
-Example of using PyNutil with pre-extracted coordinate data.
+Example of using pynutil with pre-extracted coordinate data.
 
 Instead of providing segmentation images, you can supply a DataFrame
-with coordinates in image space. PyNutil will transform them through
+with coordinates in image space. pynutil will transform them through
 the full pipeline (scaling, non-linear deformation, atlas anchoring)
 to produce 3D atlas-space coordinates and region quantification.
 
@@ -10,7 +10,7 @@ The DataFrame must have columns: X, Y, image_width, image_height, section number
 """
 import pandas as pd
 from brainglobe_atlasapi import BrainGlobeAtlas
-import PyNutil as pnt
+import pynutil as pnt
 
 atlas = BrainGlobeAtlas("allen_mouse_25um")
 alignment = pnt.read_alignment(
