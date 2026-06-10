@@ -7,7 +7,7 @@ import unittest
 import numpy as np
 from brainglobe_atlasapi import BrainGlobeAtlas
 
-from PyNutil import read_alignment, read_segmentation_dir, seg_to_coords, quantify_coords, save_analysis, interpolate_volume
+from pynutil import read_alignment, read_segmentation_dir, seg_to_coords, quantify_coords, save_analysis, interpolate_volume
 from test_helpers import copy_tree_to_demo, small_volume_scale
 
 try:

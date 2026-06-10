@@ -4,7 +4,7 @@ To do this we use image_to_coords instead of seg_to_coords.
 from pathlib import Path
 
 from brainglobe_atlasapi import BrainGlobeAtlas
-import PyNutil as pnt
+import pynutil as pnt
 
 # Configuration
 repo_root = Path(__file__).resolve().parents[1]

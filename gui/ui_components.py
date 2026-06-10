@@ -1,5 +1,5 @@
 """
-UI Component utilities for PyNutil GUI
+UI Component utilities for pynutil GUI
 """
 
 from PyQt6.QtWidgets import (

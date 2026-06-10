@@ -3,7 +3,7 @@ requires = ["setuptools>=64", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "PyNutil"
+name = "pynutil"
 dynamic = ["version"]
 license = "MIT"
 description = "a package to quantify atlas registered brain data"
@@ -39,6 +39,6 @@ Homepage = "https://github.com/Neural-Systems-at-UIO/PyNutil"
 gui = ["PyQt6"]
 
 [tool.setuptools.packages.find]
-include = ["PyNutil*"]
+include = ["pynutil*"]
 
 [tool.setuptools_scm]

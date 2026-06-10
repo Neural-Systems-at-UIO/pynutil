@@ -234,11 +234,11 @@ def quantify_coords(result, atlas_labels):
     Parameters
     ----------
     result
-        Extraction result returned by :func:`PyNutil.seg_to_coords`,
-        :func:`PyNutil.image_to_coords`, or :func:`PyNutil.xy_to_coords`.
+        Extraction result returned by :func:`pynutil.seg_to_coords`,
+        :func:`pynutil.image_to_coords`, or :func:`pynutil.xy_to_coords`.
     atlas_labels
         Atlas labels to use when building the output table. This may be a
-        labels :class:`pandas.DataFrame`, an :class:`~PyNutil.AtlasData`
+        labels :class:`pandas.DataFrame`, an :class:`~pynutil.AtlasData`
         instance, or a BrainGlobe atlas object.
 
     Returns

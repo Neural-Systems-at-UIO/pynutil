@@ -2,7 +2,7 @@ from brainrender import Scene
 from brainrender.actors import Points
 
 from brainglobe_atlasapi import BrainGlobeAtlas
-import PyNutil as pnt
+import pynutil as pnt
 
 atlas = BrainGlobeAtlas("allen_mouse_25um")
 alignment = pnt.read_alignment(

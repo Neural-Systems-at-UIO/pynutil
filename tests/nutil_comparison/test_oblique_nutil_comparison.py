@@ -5,7 +5,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from PyNutil import load_custom_atlas, read_alignment, read_segmentation_dir, seg_to_coords, quantify_coords
+from pynutil import load_custom_atlas, read_alignment, read_segmentation_dir, seg_to_coords, quantify_coords
 
 try:
     from timing_utils import TimedTestCase
@@ -130,7 +130,7 @@ class TestObliqueNutilComparison(TimedTestCase):
         )
 
     def test_allen_oblique_load_and_region_area_match_nutil(self):
-        self.skipTest("Flat-file atlas support has been removed from PyNutil.")
+        self.skipTest("Flat-file atlas support has been removed from pynutil.")
         result, label_df = self._run_pynutil_oblique()
 
         expected_load_path = os.path.join(

@@ -1,10 +1,10 @@
 """
-Example of using PyNutil with BrainGlobe registration and
+Example of using pynutil with BrainGlobe registration and
 pre-extracted coordinate data.
 """
 import pandas as pd
 from brainglobe_atlasapi import BrainGlobeAtlas
-import PyNutil as pnt
+import pynutil as pnt
 
 atlas = BrainGlobeAtlas("allen_mouse_25um")
 alignment = pnt.read_alignment(

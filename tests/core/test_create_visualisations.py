@@ -33,9 +33,9 @@ class TestCreateVisualisationsAdapter(unittest.TestCase):
     def test_quint_alignment_produces_visualisations(self):
         """QuickNII/VisuAlign alignment should produce visualisation PNGs
         by calling _create_visualisations directly."""
-        from PyNutil.io.section_visualisation import create_section_visualisations
-        from PyNutil.processing.adapters.registry import read_alignment
-        from PyNutil.io.atlas_loader import resolve_atlas
+        from pynutil.io.section_visualisation import create_section_visualisations
+        from pynutil.processing.adapters.registry import read_alignment
+        from pynutil.io.atlas_loader import resolve_atlas
 
         alignment_json = os.path.join(
             TEST_DIR, "test_data", "nonlinear_allen_mouse", "alignment.json"
@@ -68,9 +68,9 @@ class TestCreateVisualisationsAdapter(unittest.TestCase):
     def test_brainglobe_registration_produces_visualisations(self):
         """Brainglobe registration should produce visualisation PNGs
         (without segmentation overlay, since no matching segmentations exist)."""
-        from PyNutil.io.section_visualisation import create_section_visualisations
-        from PyNutil.processing.adapters.registry import read_alignment
-        from PyNutil.io.atlas_loader import resolve_atlas
+        from pynutil.io.section_visualisation import create_section_visualisations
+        from pynutil.processing.adapters.registry import read_alignment
+        from pynutil.io.atlas_loader import resolve_atlas
 
         bg_json = os.path.join(
             TEST_DIR, "test_data", "brainglobe_registration", "brainglobe-registration.json"
@@ -108,7 +108,7 @@ class TestCreateVisualisationsAdapter(unittest.TestCase):
         if not os.path.isfile(bg_json) or not os.path.isfile(coord_file):
             self.skipTest("Brainglobe coordinate test data not found")
 
-        from PyNutil import read_alignment, xy_to_coords, quantify_coords, save_analysis
+        from pynutil import read_alignment, xy_to_coords, quantify_coords, save_analysis
 
         atlas = BrainGlobeAtlas("allen_mouse_25um")
         alignment = read_alignment(bg_json)
@@ -130,9 +130,9 @@ class TestCreateSectionVisualisationsNoneFolder(unittest.TestCase):
 
     def test_none_segmentation_folder(self):
         """Passing None as segmentation_folder should not raise."""
-        from PyNutil.io.section_visualisation import create_section_visualisations
-        from PyNutil.io.atlas_loader import resolve_atlas
-        from PyNutil.processing.adapters.base import SliceInfo
+        from pynutil.io.section_visualisation import create_section_visualisations
+        from pynutil.io.atlas_loader import resolve_atlas
+        from pynutil.processing.adapters.base import SliceInfo
 
         _atlas = resolve_atlas(BrainGlobeAtlas("allen_mouse_25um"))
         atlas_volume, atlas_labels = _atlas.annotation, _atlas.labels
@@ -162,8 +162,8 @@ class TestCreateSectionVisualisationsNoneFolder(unittest.TestCase):
 
     def test_empty_slices_list(self):
         """An empty slices list should produce no output and not raise."""
-        from PyNutil.io.section_visualisation import create_section_visualisations
-        from PyNutil.io.atlas_loader import resolve_atlas
+        from pynutil.io.section_visualisation import create_section_visualisations
+        from pynutil.io.atlas_loader import resolve_atlas
 
         _atlas = resolve_atlas(BrainGlobeAtlas("allen_mouse_25um"))
         atlas_volume, atlas_labels = _atlas.annotation, _atlas.labels
@@ -186,7 +186,7 @@ class TestLoadRegistrationForVisualisation(unittest.TestCase):
     """Test that load_registration returns SliceInfo objects with the correct attributes."""
 
     def _load_slices(self, alignment_json):
-        from PyNutil.processing.adapters.registry import read_alignment
+        from pynutil.processing.adapters.registry import read_alignment
 
         reg_data = read_alignment(
             alignment_json, apply_deformation=False, apply_damage=False

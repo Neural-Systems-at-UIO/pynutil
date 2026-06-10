@@ -1,4 +1,4 @@
-from PyNutil.image_series import ImageSeries, Section
+from pynutil.image_series import ImageSeries, Section
 
 
 def test_image_series_stores_sections_by_number():

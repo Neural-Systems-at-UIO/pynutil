@@ -1,4 +1,4 @@
-"""File loaders for PyNutil.
+"""File loaders for pynutil.
 
 This module contains functions for reading various file formats:
 - Custom region files (TSV, XLSX)
@@ -212,7 +212,7 @@ def number_sections(filenames):
     filenames = [os.path.basename(filename) for filename in filenames]
     section_numbers = []
     for filename in filenames:
-        # Try _s### first (standard PyNutil/QUINT format)
+        # Try _s### first (standard pynutil/QUINT format)
         match = re.findall(r"\_s(\d+)", filename)
         if len(match) == 0:
             # Try _### (common alternative)

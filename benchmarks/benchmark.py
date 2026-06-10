@@ -1,7 +1,7 @@
-"""End-to-end benchmark for PyNutil.
+"""End-to-end benchmark for pynutil.
 
 Generates a synthetic atlas (NRRD), hemisphere map, label CSV, segmentation
-images, and alignment JSON, then runs the full PyNutil pipeline
+images, and alignment JSON, then runs the full pynutil pipeline
 (init -> get_coordinates -> quantify_coordinates) and reports wall-clock time
 and peak memory usage.
 
@@ -226,15 +226,15 @@ def _run_scenario_in_process(tmpdir):
     if root not in sys.path:
         sys.path.insert(0, root)
 
-    from PyNutil import (  # noqa: local import
+    from pynutil import (  # noqa: local import
         load_custom_atlas, read_alignment, seg_to_coords, quantify_coords,
     )
-    from PyNutil.io.loaders import load_json_file  # noqa: local import
+    from pynutil.io.loaders import load_json_file  # noqa: local import
 
     meta = load_json_file(os.path.join(tmpdir, "meta.json"))
 
     def _run():
-        # Suppress stdout from PyNutil (e.g. "Found N segmentations")
+        # Suppress stdout from pynutil (e.g. "Found N segmentations")
         # by temporarily redirecting it to stderr.
         old_stdout = sys.stdout
         sys.stdout = sys.stderr
@@ -346,7 +346,7 @@ def _format_markdown(results):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PyNutil end-to-end benchmark")
+    parser = argparse.ArgumentParser(description="pynutil end-to-end benchmark")
     parser.add_argument("--json", action="store_true", help="Output JSON instead of Markdown")
     parser.add_argument(
         "--run-scenario", metavar="TMPDIR",

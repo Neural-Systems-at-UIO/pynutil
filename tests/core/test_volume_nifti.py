@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from PyNutil import VolumeResult, save_volumes
+from pynutil import VolumeResult, save_volumes
 
 
 class TestSaveVolumes(unittest.TestCase):

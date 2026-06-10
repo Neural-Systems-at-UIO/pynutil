@@ -7,7 +7,7 @@ from .io.loaders import load_json_file
 
 
 @dataclass
-class PyNutilConfig:
+class PynutilConfig:
     segmentation_folder: Optional[str] = None
     image_folder: Optional[str] = None
     coordinate_file: Optional[str] = None
@@ -25,12 +25,12 @@ class PyNutilConfig:
     segmentation_format: str = "binary"  # "binary" or "cellpose"
 
     @classmethod
-    def from_settings_file(cls, settings_file: str) -> "PyNutilConfig":
+    def from_settings_file(cls, settings_file: str) -> "PynutilConfig":
         settings = load_json_file(settings_file)
         return cls.from_settings_dict(settings)
 
     @classmethod
-    def from_settings_dict(cls, settings: Dict[str, Any]) -> "PyNutilConfig":
+    def from_settings_dict(cls, settings: Dict[str, Any]) -> "PynutilConfig":
         # alignment_json is required in settings files.
         if "alignment_json" not in settings:
             raise KeyError(
@@ -63,7 +63,7 @@ class PyNutilConfig:
 
         return cfg
 
-    def normalize(self, *, logger=None) -> "PyNutilConfig":
+    def normalize(self, *, logger=None) -> "PynutilConfig":
         # If atlas_name is provided, voxel size is inferred from atlas name and
         # any manually provided voxel_size_um is ignored (existing behavior).
         if self.atlas_name is not None and self.voxel_size_um is not None:

@@ -1,4 +1,4 @@
-"""MeshView JSON writer for PyNutil.
+"""MeshView JSON writer for pynutil.
 
 This module handles writing point data to MeshView-compatible JSON format,
 supporting both atlas-region-based and intensity-based point clouds.

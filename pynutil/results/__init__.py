@@ -1,4 +1,4 @@
-"""Result data models used across PyNutil pipelines."""
+"""Result data models used across pynutil pipelines."""
 
 from .atlas import AtlasData
 from .extraction import ExtractionResult, PointSetResult

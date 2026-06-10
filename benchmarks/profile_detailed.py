@@ -1,4 +1,4 @@
-"""Detailed per-function profiling of PyNutil pipeline."""
+"""Detailed per-function profiling of pynutil pipeline."""
 import cProfile
 import pstats
 import io
@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from benchmarks.benchmark import (
     _write_scenario, ATLAS_SHAPE, COLOUR,
 )
-from PyNutil import load_custom_atlas, read_alignment, seg_to_coords, quantify_coords
+from pynutil import load_custom_atlas, read_alignment, seg_to_coords, quantify_coords
 
 def run(paths):
     atlas = load_custom_atlas(

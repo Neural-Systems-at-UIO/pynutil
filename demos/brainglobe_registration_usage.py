@@ -1,14 +1,14 @@
 """
 If you have registered your data using BrainGlobe registration
 (https://github.com/brainglobe/brainglobe-registration), you can
-use these data with PyNutil. At the moment brainglobe registration
+use these data with pynutil. At the moment brainglobe registration
 outputs one directory per image. Specify the path to the registration
-json which is saved by brainglobe registration. PyNutil assumes the
+json which is saved by brainglobe registration. pynutil assumes the
 deformation files are saved into the same folder. Everything else
 works as normal.
 """
 from brainglobe_atlasapi import BrainGlobeAtlas
-import PyNutil as pnt
+import pynutil as pnt
 
 atlas = BrainGlobeAtlas("allen_mouse_25um")
 alignment = pnt.read_alignment(

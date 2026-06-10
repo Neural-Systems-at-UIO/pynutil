@@ -90,7 +90,7 @@ class BrainGlobeRegistrationLoader(AnchoringLoader):
     Converts ``atlas_slice_corners`` (in microns) to a QuickNII-compatible
     anchoring vector by:
     1. Converting microns to atlas voxels using the atlas resolution.
-    2. Transforming from BrainGlobe orientation to PyNutil orientation
+    2. Transforming from BrainGlobe orientation to pynutil orientation
        (which applies ``transpose([2,0,1])[::-1,::-1,::-1]``).
     3. Computing O, U, V vectors from the TL, TR, BL corners.
     """
@@ -128,11 +128,11 @@ class BrainGlobeRegistrationLoader(AnchoringLoader):
 
     @staticmethod
     def _bg_to_pynutil(corners_vx: np.ndarray, bg_shape) -> np.ndarray:
-        """Convert BrainGlobe voxel coords to PyNutil atlas coords.
+        """Convert BrainGlobe voxel coords to pynutil atlas coords.
 
-        PyNutil reorients the atlas via ``transpose([2,0,1])[::-1,::-1,::-1]``.
+        pynutil reorients the atlas via ``transpose([2,0,1])[::-1,::-1,::-1]``.
         Given BrainGlobe coords ``(bg0, bg1, bg2)`` (AP, DV, LR) and the
-        original annotation shape ``(S0, S1, S2)``, the PyNutil coords are:
+        original annotation shape ``(S0, S1, S2)``, the pynutil coords are:
             px = (S2 - 1) - bg2
             py = (S0 - 1) - bg0
             pz = (S1 - 1) - bg1

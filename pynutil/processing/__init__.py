@@ -1,4 +1,4 @@
-"""PyNutil processing subpackage.
+"""pynutil processing subpackage.
 
 This package contains modules for data processing and analysis:
 

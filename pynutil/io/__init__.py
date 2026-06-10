@@ -1,4 +1,4 @@
-"""PyNutil I/O subpackage.
+"""pynutil I/O subpackage.
 
 This package contains modules for reading and writing data:
 - atlas_loader: Loading BrainGlobe and custom atlases

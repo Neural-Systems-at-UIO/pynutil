@@ -7,7 +7,7 @@ from typing import Tuple
 import numpy as np
 from brainglobe_space import AnatomicalSpace
 
-# The internal orientation used by PyNutil after process_atlas_volume
+# The internal orientation used by pynutil after process_atlas_volume
 # (transpose([2,0,1])[::-1,::-1,::-1] applied to BrainGlobe's native "asr").
 INTERNAL_ORIENTATION = "lpi"
 _ORIENTATION_GROUPS = ("lr", "si", "ap")

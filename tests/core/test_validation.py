@@ -2,9 +2,9 @@ import unittest
 import os
 import sys
 
-from PyNutil import load_custom_atlas, read_alignment, read_segmentation_dir, seg_to_coords
+from pynutil import load_custom_atlas, read_alignment, read_segmentation_dir, seg_to_coords
 
-# Add the root directory to sys.path to allow importing PyNutil
+# Add the root directory to sys.path to allow importing pynutil
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 ATLAS_DIR = os.path.abspath(
@@ -36,8 +36,8 @@ class TestValidation(unittest.TestCase):
         # Note: voxel_size_um is ignored when atlas_name is provided; with a custom atlas
         # it is accepted as-is (no inference).  We test the normalisation warning path
         # indirectly via the config's normalize() logic.
-        from PyNutil.config import PyNutilConfig
-        cfg = PyNutilConfig(atlas_name="allen_mouse_25um", voxel_size_um=10.0)
+        from pynutil.config import PynutilConfig
+        cfg = PynutilConfig(atlas_name="allen_mouse_25um", voxel_size_um=10.0)
         cfg.normalize()
         # voxel_size_um should be cleared because atlas_name takes precedence
         self.assertIsNone(cfg.voxel_size_um)

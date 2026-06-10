@@ -30,7 +30,7 @@ class TestBrainGlobeRegistration(unittest.TestCase):
     def test_loader_produces_valid_anchoring(self):
         """BrainGlobeRegistrationLoader should produce a SliceInfo with
         correct anchoring vector dimensions and section metadata."""
-        from PyNutil.processing.adapters.anchoring import BrainGlobeRegistrationLoader
+        from pynutil.processing.adapters.anchoring import BrainGlobeRegistrationLoader
 
         loader = BrainGlobeRegistrationLoader()
         self.assertTrue(loader.can_handle(BG_JSON))
@@ -56,9 +56,9 @@ class TestBrainGlobeRegistration(unittest.TestCase):
     def test_atlas_slice_has_content(self):
         """The anchoring vector should produce an atlas slice with substantial
         nonzero coverage (brain regions)."""
-        from PyNutil.processing.adapters.anchoring import BrainGlobeRegistrationLoader
-        from PyNutil.processing.atlas_map import generate_target_slice
-        from PyNutil.io.atlas_loader import resolve_atlas
+        from pynutil.processing.adapters.anchoring import BrainGlobeRegistrationLoader
+        from pynutil.processing.atlas_map import generate_target_slice
+        from pynutil.io.atlas_loader import resolve_atlas
 
         loader = BrainGlobeRegistrationLoader()
         data = loader.load(BG_JSON)
@@ -75,10 +75,10 @@ class TestBrainGlobeRegistration(unittest.TestCase):
     def test_warped_atlas_matches_registered_atlas(self):
         """After applying deformation, the warped atlas slice should closely
         match ``registered_atlas.tiff`` (IoU > 0.98)."""
-        from PyNutil.processing.adapters.anchoring import BrainGlobeRegistrationLoader
-        from PyNutil.processing.adapters.deformation import BrainGlobeDeformationProvider
-        from PyNutil.processing.atlas_map import generate_target_slice, warp_image
-        from PyNutil.io.atlas_loader import resolve_atlas
+        from pynutil.processing.adapters.anchoring import BrainGlobeRegistrationLoader
+        from pynutil.processing.adapters.deformation import BrainGlobeDeformationProvider
+        from pynutil.processing.atlas_map import generate_target_slice, warp_image
+        from pynutil.io.atlas_loader import resolve_atlas
 
         loader = BrainGlobeRegistrationLoader()
         data = loader.load(BG_JSON)
@@ -148,7 +148,7 @@ class TestBrainGlobeRegistration(unittest.TestCase):
     def test_load_registration_end_to_end(self):
         """``load_registration`` should auto-detect brainglobe format and
         produce a RegistrationData with deformation applied."""
-        from PyNutil.processing.adapters import read_alignment
+        from pynutil.processing.adapters import read_alignment
 
         data = read_alignment(BG_JSON)
         self.assertEqual(len(data.slices), 1)
@@ -164,7 +164,7 @@ class TestBrainGlobeRegistration(unittest.TestCase):
 
     def test_quint_json_not_detected_as_brainglobe(self):
         """QuickNII JSON should NOT be detected as brainglobe."""
-        from PyNutil.processing.adapters.anchoring import BrainGlobeRegistrationLoader
+        from pynutil.processing.adapters.anchoring import BrainGlobeRegistrationLoader
 
         quint_json = os.path.join(
             TEST_DIR, "test_data", "nonlinear_allen_mouse", "alignment.json"
