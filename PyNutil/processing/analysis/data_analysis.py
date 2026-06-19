@@ -28,12 +28,17 @@ from ..utils import (
 def map_to_custom_regions(custom_regions_dict, points_labels):
     """Reassign atlas-region labels to user-defined custom region IDs.
 
-    Args:
-        custom_regions_dict: Dict with keys ``custom_ids``, ``custom_names``,
-            ``rgb_values``, ``subregion_ids``.
-        points_labels: 1-D array of atlas region IDs (one per point).
+    Parameters
+    ----------
+    custom_regions_dict : dict
+        Dict with keys ``custom_ids``, ``custom_names``,
+        ``rgb_values``, ``subregion_ids``.
+    points_labels : ndarray
+        1-D array of atlas region IDs (one per point).
 
-    Returns:
+    Returns
+    -------
+    ndarray
         1-D array of custom region IDs (same shape as *points_labels*).
     """
     custom_points_labels = np.zeros_like(points_labels)
@@ -51,13 +56,18 @@ def map_to_custom_regions(custom_regions_dict, points_labels):
 def apply_custom_regions(df, custom_regions_dict):
     """Remap a region-level DataFrame to user-defined custom regions.
 
-    Args:
-        df: DataFrame with at least an ``idx`` column containing atlas
-            region IDs, plus various count/area columns.
-        custom_regions_dict: Dict with keys ``custom_ids``, ``custom_names``,
-            ``rgb_values``, ``subregion_ids``.
+    Parameters
+    ----------
+    df : DataFrame
+        DataFrame with at least an ``idx`` column containing atlas
+        region IDs, plus various count/area columns.
+    custom_regions_dict : dict
+        Dict with keys ``custom_ids``, ``custom_names``,
+        ``rgb_values``, ``subregion_ids``.
 
-    Returns:
+    Returns
+    -------
+    tuple
         (grouped_df, df) — *grouped_df* aggregated by custom region,
         *df* with an added ``custom_region_name`` column.
     """
@@ -128,18 +138,29 @@ def quantify_labeled_points(
 ):
     """Aggregate per-pixel and per-centroid counts into a summary table.
 
-    Args:
-        points_labels: 1-D array of region IDs for points.
-        centroids_labels: 1-D array of region IDs for centroids.
-        points_undamaged: 1-D undamaged mask for points, or None if no damage mask.
-        centroids_undamaged: 1-D undamaged mask for centroids, or None if no damage mask.
-        points_hemi: 1-D hemisphere labels for points.
-        centroids_hemi: 1-D hemisphere labels for centroids.
-        region_areas: Combined region-area DataFrame (summed across sections).
-        atlas_labels: Atlas labels DataFrame.
+    Parameters
+    ----------
+    points_labels : ndarray
+        1-D array of region IDs for points.
+    centroids_labels : ndarray
+        1-D array of region IDs for centroids.
+    points_undamaged : ndarray or None
+        1-D undamaged mask for points, or None if no damage mask.
+    centroids_undamaged : ndarray or None
+        1-D undamaged mask for centroids, or None if no damage mask.
+    points_hemi : ndarray
+        1-D hemisphere labels for points.
+    centroids_hemi : ndarray
+        1-D hemisphere labels for centroids.
+    region_areas : DataFrame
+        Combined region-area DataFrame (summed across sections).
+    atlas_labels : DataFrame
+        Atlas labels DataFrame.
 
-    Returns:
-        label_df — whole-series DataFrame.
+    Returns
+    -------
+    DataFrame
+        Whole-series quantification table.
     """
     count_df = pixel_count_per_region(
         points_labels,
@@ -198,13 +219,18 @@ def _merge_dataframes(current_df, ra, atlas_labels):
 def quantify_intensity(region_intensities, atlas_labels):
     """Aggregate per-region intensity into a summary table.
 
-    Args:
-        region_intensities: Combined intensity DataFrame (already summed
-            across sections by the batch processor).
-        atlas_labels: Atlas labels DataFrame.
+    Parameters
+    ----------
+    region_intensities : DataFrame
+        Combined intensity DataFrame (already summed across sections
+        by the batch processor).
+    atlas_labels : DataFrame
+        Atlas labels DataFrame.
 
-    Returns:
-        label_df — whole-series DataFrame.
+    Returns
+    -------
+    DataFrame
+        Whole-series intensity quantification table.
     """
     if region_intensities is None or region_intensities.empty:
         return pd.DataFrame()

@@ -116,13 +116,20 @@ def save_analysis(
 ):
     """Save analysis output to the specified directory.
 
-    Args:
-        output_folder: Directory to write output files.
-        result: ExtractionResult from coordinate extraction.
-        atlas_labels: Atlas labels DataFrame (or AtlasData — ``.labels`` used).
-        label_df: Whole-series quantification DataFrame.
-        colormap: Colormap for MeshView intensity output.
-        settings_dict: Optional dict written to pynutil_settings.json.
+    Parameters
+    ----------
+    output_folder : str
+        Directory to write output files.
+    result : ExtractionResult
+        ExtractionResult from coordinate extraction.
+    atlas_labels : DataFrame or AtlasData
+        Atlas labels DataFrame (or AtlasData — ``.labels`` used).
+    label_df : DataFrame, optional
+        Whole-series quantification DataFrame.
+    colormap : str
+        Colormap for MeshView intensity output.
+    settings_dict : dict, optional
+        Optional dict written to pynutil_settings.json.
     """
     atlas_labels = resolve_atlas_labels(atlas_labels)
 

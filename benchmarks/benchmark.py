@@ -134,8 +134,10 @@ def _make_markers(reg_width, reg_height, seed=0):
 def _write_scenario(tmpdir, n_images, resolution, segmentation_format="binary"):
     """Write all synthetic files for one benchmark scenario.
 
-    Returns:
-        dict with paths and scenario metadata.
+    Returns
+    -------
+    dict
+        Paths and scenario metadata.
     """
     atlas_path = os.path.join(tmpdir, "atlas.nrrd")
     hemi_path = os.path.join(tmpdir, "hemi.nrrd")

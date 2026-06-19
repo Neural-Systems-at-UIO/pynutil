@@ -78,12 +78,17 @@ def _shape_in_orientation(
 ) -> Tuple[int, int, int]:
     """Derive atlas shape in a given orientation from the internal shape.
 
-    Args:
-        internal_shape: Shape of the atlas volume in INTERNAL_ORIENTATION.
-        orientation: Target orientation string.
+    Parameters
+    ----------
+    internal_shape : tuple of int
+        Shape of the atlas volume in INTERNAL_ORIENTATION.
+    orientation : str
+        Target orientation string.
 
-    Returns:
-        Tuple of ints — the shape the atlas would have in *orientation*.
+    Returns
+    -------
+    tuple of int
+        The shape the atlas would have in *orientation*.
     """
     orientation = _validate_orientation_code(orientation)
     if orientation == INTERNAL_ORIENTATION:
@@ -103,13 +108,20 @@ def reorient_points(
 ) -> np.ndarray:
     """Reorient (N, 3) atlas-space points between orientations.
 
-    Args:
-        points: (N, 3) array of coordinates.
-        internal_atlas_shape: Shape of the atlas volume in INTERNAL_ORIENTATION.
-        target_orientation: 3-letter BrainGlobe orientation string (e.g. "asr").
-        source_orientation: Source orientation. Defaults to INTERNAL_ORIENTATION.
+    Parameters
+    ----------
+    points : ndarray
+        (N, 3) array of coordinates.
+    internal_atlas_shape : tuple of int
+        Shape of the atlas volume in INTERNAL_ORIENTATION.
+    target_orientation : str
+        3-letter BrainGlobe orientation string (e.g. "asr").
+    source_orientation : str, optional
+        Source orientation. Defaults to INTERNAL_ORIENTATION.
 
-    Returns:
+    Returns
+    -------
+    ndarray
         (N, 3) array of coordinates in the target orientation.
     """
     if points is None or len(points) == 0:
@@ -129,12 +141,18 @@ def reorient_volume(
 ) -> np.ndarray:
     """Reorient a 3D volume from internal to target orientation.
 
-    Args:
-        volume: 3D numpy array in internal orientation.
-        atlas_shape: Shape of the atlas volume in internal orientation.
-        target_orientation: 3-letter BrainGlobe orientation string (e.g. "asr").
+    Parameters
+    ----------
+    volume : ndarray
+        3D numpy array in internal orientation.
+    atlas_shape : tuple of int
+        Shape of the atlas volume in internal orientation.
+    target_orientation : str
+        3-letter BrainGlobe orientation string (e.g. "asr").
 
-    Returns:
+    Returns
+    -------
+    ndarray
         3D numpy array in the target orientation.
     """
     target_orientation = _validate_orientation_code(target_orientation)

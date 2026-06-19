@@ -41,13 +41,19 @@ def triangulate(w, h, markers):
     """
     Triangulates a set of markers.
 
-    Args:
-        w (int): Width of the image.
-        h (int): Height of the image.
-        markers (list): List of markers.
+    Parameters
+    ----------
+    w : int
+        Width of the image.
+    h : int
+        Height of the image.
+    markers : list
+        List of markers.
 
-    Returns:
-        list: List of triangles.
+    Returns
+    -------
+    list
+        List of triangles.
     """
     vertices = [
         [-0.1 * w, -0.1 * h, -0.1 * w, -0.1 * h],
@@ -69,13 +75,19 @@ def transform_vec(triangulation, x, y):
     """
     Transforms a set of points using a triangulation.
 
-    Args:
-        triangulation (list): List of triangles.
-        x (ndarray): X coordinates of the points.
-        y (ndarray): Y coordinates of the points.
+    Parameters
+    ----------
+    triangulation : list
+        List of triangles.
+    x : ndarray
+        X coordinates of the points.
+    y : ndarray
+        Y coordinates of the points.
 
-    Returns:
-        tuple: Transformed coordinates.
+    Returns
+    -------
+    tuple
+        Transformed coordinates.
     """
     x = np.asarray(x, dtype=np.float64)
     y = np.asarray(y, dtype=np.float64)
@@ -102,13 +114,19 @@ def forwardtransform_vec(triangulation, x, y):
     """
     Forward transforms a set of points using a triangulation.
 
-    Args:
-        triangulation (list): List of triangles.
-        x (ndarray): X coordinates of the points.
-        y (ndarray): Y coordinates of the points.
+    Parameters
+    ----------
+    triangulation : list
+        List of triangles.
+    x : ndarray
+        X coordinates of the points.
+    y : ndarray
+        Y coordinates of the points.
 
-    Returns:
-        tuple: Transformed coordinates.
+    Returns
+    -------
+    tuple
+        Transformed coordinates.
     """
     x = np.asarray(x, dtype=np.float64)
     y = np.asarray(y, dtype=np.float64)
@@ -146,14 +164,21 @@ def distsquare(ax, ay, bx, by):
     """
     Calculates the squared distance between two points.
 
-    Args:
-        ax (float): X coordinate of the first point.
-        ay (float): Y coordinate of the first point.
-        bx (float): X coordinate of the second point.
-        by (float): Y coordinate of the second point.
+    Parameters
+    ----------
+    ax : float
+        X coordinate of the first point.
+    ay : float
+        Y coordinate of the first point.
+    bx : float
+        X coordinate of the second point.
+    by : float
+        Y coordinate of the second point.
 
-    Returns:
-        float: Squared distance between the points.
+    Returns
+    -------
+    float
+        Squared distance between the points.
     """
     return (ax - bx) * (ax - bx) + (ay - by) * (ay - by)
 
@@ -162,12 +187,17 @@ def edgeindex(a, b):
     """
     Calculates the index of an edge in the edge list.
 
-    Args:
-        a (int): Index of the first vertex.
-        b (int): Index of the second vertex.
+    Parameters
+    ----------
+    a : int
+        Index of the first vertex.
+    b : int
+        Index of the second vertex.
 
-    Returns:
-        int: Index of the edge.
+    Returns
+    -------
+    int
+        Index of the edge.
     """
     i = min(a, b)
     j = max(a, b)
@@ -187,12 +217,18 @@ class Triangle:
         """
         Initializes a triangle.
 
-        Args:
-            a (int): Index of the first vertex.
-            b (int): Index of the second vertex.
-            c (int): Index of the third vertex.
-            vlist (list): List of vertices.
-            elist (list): List of edges.
+        Parameters
+        ----------
+        a : int
+            Index of the first vertex.
+        b : int
+            Index of the second vertex.
+        c : int
+            Index of the third vertex.
+        vlist : list
+            List of vertices.
+        elist : list
+            List of edges.
         """
         self.A = vlist[a]
         self.B = vlist[b]
@@ -226,9 +262,7 @@ class Triangle:
         self.r2den = distsquare(ax * self.den, ay * self.den, self.Mdenx, self.Mdeny)
 
     def removeedges(self):
-        """
-        Removes the edges of the triangle.
-        """
+        """Remove the edges of the triangle."""
         for edge in self.edges:
             self.elist[edge] -= 1
         del self.edges
@@ -238,12 +272,17 @@ class Triangle:
         """
         Checks if a point is inside the circumcircle of the triangle.
 
-        Args:
-            x (float): X coordinate of the point.
-            y (float): Y coordinate of the point.
+        Parameters
+        ----------
+        x : float
+            X coordinate of the point.
+        y : float
+            Y coordinate of the point.
 
-        Returns:
-            bool: True if the point is inside the circumcircle, False otherwise.
+        Returns
+        -------
+        bool
+            True if the point is inside the circumcircle, False otherwise.
         """
         return (
             distsquare(x * self.den, y * self.den, self.Mdenx, self.Mdeny) < self.r2den

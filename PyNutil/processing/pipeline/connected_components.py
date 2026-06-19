@@ -18,15 +18,22 @@ def _group_pixels_by_label(ys, xs, labels, *, compute_centroid=True):
     Shared implementation used by both :func:`connected_components_props`
     (OpenCV labels) and :func:`labeled_image_props` (pre-labelled images).
 
-    Args:
-        ys: 1-D array of Y coordinates.
-        xs: 1-D array of X coordinates.
-        labels: 1-D array of integer label IDs (same length as *ys*).
-        compute_centroid: If ``True`` compute the mean centroid; if ``False``
-            the ``centroid`` key in each dict will be ``None``.
+    Parameters
+    ----------
+    ys : ndarray
+        1-D array of Y coordinates.
+    xs : ndarray
+        1-D array of X coordinates.
+    labels : ndarray
+        1-D array of integer label IDs (same length as *ys*).
+    compute_centroid : bool, optional
+        If ``True`` compute the mean centroid; if ``False``
+        the ``centroid`` key in each dict will be ``None``.
 
-    Returns:
-        tuple: (props, unique_ids) where *props* is a list[dict] with keys
+    Returns
+    -------
+    tuple
+        (props, unique_ids) where *props* is a list of dicts with keys
         ``area``, ``centroid`` (y, x) and ``coords`` (N × 2 ndarray), and
         *unique_ids* is the sorted array of label IDs.
     """
@@ -61,15 +68,20 @@ def connected_components_props(binary_mask: np.ndarray, *, connectivity: int = 4
 
     Uses OpenCV so we can avoid scikit-image dependency.
 
-    Args:
-        binary_mask: Boolean 2D array representing the mask.
-        connectivity: Pixel connectivity (4 or 8).
+    Parameters
+    ----------
+    binary_mask : ndarray
+        Boolean 2D array representing the mask.
+    connectivity : int, optional
+        Pixel connectivity (4 or 8).
 
-    Returns:
-        list: List of dicts with:
-            - area (int)
-            - centroid (tuple[float, float]) in (y, x) order
-            - coords (ndarray[int]) of shape (N, 2) in (y, x) order
+    Returns
+    -------
+    list of dict
+        Each dict has keys:
+        - ``area`` (int)
+        - ``centroid`` (tuple of float) in (y, x) order
+        - ``coords`` (ndarray of int) of shape (N, 2) in (y, x) order
     """
     if binary_mask.size == 0:
         return []
@@ -100,11 +112,15 @@ def connected_components_props(binary_mask: np.ndarray, *, connectivity: int = 4
 def labeled_image_props(label_image: np.ndarray):
     """Extract properties from a pre-labeled image (e.g., Cellpose output).
 
-    Args:
-        label_image: 2D array where each unique non-zero value is an object.
+    Parameters
+    ----------
+    label_image : ndarray
+        2D array where each unique non-zero value is an object.
 
-    Returns:
-        list: List of dicts with area, centroid, and coords for each object.
+    Returns
+    -------
+    list of dict
+        Each dict has ``area``, ``centroid``, and ``coords`` for each object.
     """
     ys, xs = np.nonzero(label_image)
     if ys.size == 0:
@@ -125,18 +141,28 @@ def get_objects_and_assign_regions(
 ):
     """Single-pass object detection, pixel extraction, and region assignment.
 
-    Args:
-        segmentation: Segmentation image array.
-        adapter: Segmentation adapter instance.
-        pixel_id: Pixel color to match [R, G, B] (only used for binary format).
-        atlas_map: 2D atlas label map.
-        y_scale: Vertical scaling factor (segmentation → registration space).
-        x_scale: Horizontal scaling factor (segmentation → registration space).
-        object_cutoff: Minimum object size.
+    Parameters
+    ----------
+    segmentation : ndarray
+        Segmentation image array.
+    adapter : SegmentationAdapter
+        Segmentation adapter instance.
+    pixel_id : list
+        Pixel color to match [R, G, B] (only used for binary format).
+    atlas_map : ndarray
+        2D atlas label map.
+    y_scale : float
+        Vertical scaling factor (segmentation → registration space).
+    x_scale : float
+        Horizontal scaling factor (segmentation → registration space).
+    object_cutoff : int, optional
+        Minimum object size.
 
-    Returns:
-        tuple: (centroids, scaled_centroidsX, scaled_centroidsY,
-                scaled_y, scaled_x, per_centroid_labels)
+    Returns
+    -------
+    tuple
+        (centroids, scaled_centroidsX, scaled_centroidsY,
+        scaled_y, scaled_x, per_centroid_labels)
     """
     # Create binary mask using the adapter
     binary_seg = adapter.create_binary_mask(segmentation, pixel_id)

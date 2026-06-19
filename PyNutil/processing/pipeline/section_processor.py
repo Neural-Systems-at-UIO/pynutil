@@ -44,12 +44,20 @@ def _prepare_section(
     shares the deformation map between them, roughly halving the cost of
     these operations.
 
-    Args:
-        slice_info: Per-section registration data.
-        seg_width: Width of the source segmentation/image.
-        seg_height: Height of the source segmentation/image.
-        p_ctx: Immutable pipeline-wide state (atlas, adapter, options).
-    Returns:
+    Parameters
+    ----------
+    slice_info : SliceInfo
+        Per-section registration data.
+    seg_width : int
+        Width of the source segmentation/image.
+    seg_height : int
+        Height of the source segmentation/image.
+    p_ctx : PipelineContext
+        Immutable pipeline-wide state (atlas, adapter, options).
+
+    Returns
+    -------
+    tuple
         (atlas_map, region_areas, hemi_mask, damage_mask, deformation)
     """
     atlas_labels = p_ctx.atlas_labels
@@ -292,12 +300,17 @@ def segmentation_to_atlas_space(
 ):
     """Transform a single segmentation file into atlas space.
 
-    Args:
-        p_ctx: Immutable pipeline-wide state (atlas, adapter, options).
-        s_ctx: Immutable per-section state (slice_info, paths).
+    Parameters
+    ----------
+    p_ctx : PipelineContext
+        Immutable pipeline-wide state (atlas, adapter, options).
+    s_ctx : SectionContext
+        Immutable per-section state (slice_info, paths).
 
-    Returns:
-        SectionResult with transformed coordinates, labels, and metadata.
+    Returns
+    -------
+    SectionResult
+        With transformed coordinates, labels, and metadata.
     """
     slice_info = s_ctx.slice_info
     pixel_id = p_ctx.pixel_id
@@ -389,16 +402,25 @@ def coordinates_to_atlas_space(
     Applies the full pipeline: scaling, label assignment, damage/hemisphere
     state, non-linear deformation, and linear anchoring.
 
-    Args:
-        p_ctx: Immutable pipeline-wide state (atlas, options).
-        slice_info: Registration data for this section.
-        coords_x: 1-D array of X coordinates in image space.
-        coords_y: 1-D array of Y coordinates in image space.
-        image_width: Width of the source image.
-        image_height: Height of the source image.
+    Parameters
+    ----------
+    p_ctx : PipelineContext
+        Immutable pipeline-wide state (atlas, options).
+    slice_info : SliceInfo
+        Registration data for this section.
+    coords_x : ndarray
+        1-D array of X coordinates in image space.
+    coords_y : ndarray
+        1-D array of Y coordinates in image space.
+    image_width : int
+        Width of the source image.
+    image_height : int
+        Height of the source image.
 
-    Returns:
-        SectionResult with transformed coordinates, labels, and metadata.
+    Returns
+    -------
+    SectionResult
+        With transformed coordinates, labels, and metadata.
     """
     reg_height, reg_width = slice_info.height, slice_info.width
 
@@ -463,12 +485,17 @@ def segmentation_to_atlas_space_intensity(
 ):
     """Transform a single image file into atlas space and extract intensity.
 
-    Args:
-        p_ctx: Immutable pipeline-wide state (atlas, adapter, options).
-        s_ctx: Immutable per-section state (slice_info, paths).
+    Parameters
+    ----------
+    p_ctx : PipelineContext
+        Immutable pipeline-wide state (atlas, adapter, options).
+    s_ctx : SectionContext
+        Immutable per-section state (slice_info, paths).
 
-    Returns:
-        IntensitySectionResult with region intensities and MeshView point data.
+    Returns
+    -------
+    IntensitySectionResult
+        With region intensities and MeshView point data.
     """
     slice_info = s_ctx.slice_info
     adapter = p_ctx.segmentation_adapter

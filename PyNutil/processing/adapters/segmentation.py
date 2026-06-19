@@ -102,11 +102,16 @@ class SegmentationAdapter(ABC):
     ) -> np.ndarray:
         """Create a binary mask from the segmentation.
 
-        Args:
-            segmentation: The loaded segmentation image.
-            pixel_id: Optional pixel color to match (for color-based formats).
+        Parameters
+        ----------
+        segmentation : ndarray
+            The loaded segmentation image.
+        pixel_id : list of int, optional
+            Pixel color to match (for color-based formats).
 
-        Returns:
+        Returns
+        -------
+        ndarray
             Boolean 2D array where True indicates foreground.
         """
         pass
@@ -120,13 +125,19 @@ class SegmentationAdapter(ABC):
     ) -> List[ObjectInfo]:
         """Extract individual objects from the segmentation.
 
-        Args:
-            segmentation: The loaded segmentation image.
-            binary_mask: The binary mask from create_binary_mask().
-            min_area: Minimum object area threshold.
+        Parameters
+        ----------
+        segmentation : ndarray
+            The loaded segmentation image.
+        binary_mask : ndarray
+            The binary mask from create_binary_mask().
+        min_area : int, optional
+            Minimum object area threshold.
 
-        Returns:
-            List of ObjectInfo for each detected object.
+        Returns
+        -------
+        list of ObjectInfo
+            For each detected object.
         """
         pass
 
@@ -136,11 +147,15 @@ class SegmentationAdapter(ABC):
         Override this method for formats that use color-coded pixels.
         Default implementation returns None (not applicable).
 
-        Args:
-            segmentation: The loaded segmentation image.
+        Parameters
+        ----------
+        segmentation : ndarray
+            The loaded segmentation image.
 
-        Returns:
-            List of [R, G, B] values or None if not applicable.
+        Returns
+        -------
+        list of int or None
+            [R, G, B] values or None if not applicable.
         """
         return None
 

@@ -40,9 +40,11 @@ class VisuAlignDeformationProvider(DeformationProvider):
     def __init__(self, path: Optional[str] = None):
         """Initialize provider.
 
-        Args:
-            path: Optional separate file with VisuAlign markers.
-                  If None, uses markers from the anchoring file.
+        Parameters
+        ----------
+        path : str, optional
+            Optional separate file with VisuAlign markers.
+            If None, uses markers from the anchoring file.
         """
         self.path = path
 
@@ -63,8 +65,10 @@ class VisuAlignDeformationProvider(DeformationProvider):
     ) -> Tuple[DeformationFunction, DeformationFunction]:
         """Create deformation functions from VisuAlign markers.
 
-        Returns:
-            Tuple of (inverse_deform, forward_deform) functions.
+        Returns
+        -------
+        tuple
+            (inverse_deform, forward_deform) functions.
             - inverse_deform: maps from deformed to original (transform_vec)
             - forward_deform: maps from original to deformed (forwardtransform_vec)
         """
@@ -135,9 +139,11 @@ class BrainGlobeDeformationProvider(DeformationProvider):
     def __init__(self, reg_dir: Optional[str] = None):
         """Initialize provider.
 
-        Args:
-            reg_dir: Directory containing deformation field TIFFs.
-                     If None, the directory is taken from SliceInfo metadata.
+        Parameters
+        ----------
+        reg_dir : str, optional
+            Directory containing deformation field TIFFs.
+            If None, the directory is taken from SliceInfo metadata.
         """
         self.reg_dir = reg_dir
 
@@ -146,9 +152,11 @@ class BrainGlobeDeformationProvider(DeformationProvider):
     ) -> Tuple[np.ndarray, np.ndarray]:
         """Load deformation field TIFFs from *reg_dir*.
 
-        Raises:
-            FileNotFoundError: If deformation field TIFFs are missing, which
-                should not happen for a valid brainglobe registration output.
+        Raises
+        ------
+        FileNotFoundError
+            If deformation field TIFFs are missing, which should not happen
+            for a valid brainglobe registration output.
         """
         f0_path = os.path.join(reg_dir, "deformation_field_0.tiff")
         f1_path = os.path.join(reg_dir, "deformation_field_1.tiff")

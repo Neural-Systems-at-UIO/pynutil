@@ -22,13 +22,19 @@ from ...io.loaders import load_json_file
 def create_damage_mask(slice_info, section_grid, grid_spacing):
     """Create a binary damage mask from grid information in the given section.
 
-    Args:
-        slice_info: SliceInfo with anchoring and registration dimensions.
-        section_grid (dict): Dictionary with grid data (grid, gridx, gridy).
-        grid_spacing (int): Space between grid marks.
+    Parameters
+    ----------
+    slice_info : SliceInfo
+        SliceInfo with anchoring and registration dimensions.
+    section_grid : dict
+        Dictionary with grid data (grid, gridx, gridy).
+    grid_spacing : int
+        Space between grid marks.
 
-    Returns:
-        ndarray: Binary mask with damaged areas marked as 0.
+    Returns
+    -------
+    ndarray
+        Binary mask with damaged areas marked as 0.
     """
     width = slice_info.width
     height = slice_info.height
@@ -70,9 +76,11 @@ class QCAlignDamageProvider(DamageProvider):
     def __init__(self, path: Optional[str] = None):
         """Initialize provider.
 
-        Args:
-            path: Optional separate file with QCAlign damage grids.
-                  If None, uses grids from the anchoring file.
+        Parameters
+        ----------
+        path : str, optional
+            Optional separate file with QCAlign damage grids.
+            If None, uses grids from the anchoring file.
         """
         self.path = path
 

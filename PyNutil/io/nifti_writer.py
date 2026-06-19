@@ -17,11 +17,16 @@ def write_nifti(
 
     The header is written with both qform and sform set and units set to microns.
 
-    Args:
-        volume: 3D volume array. Saved as uint8.
-        voxel_size_um: Isotropic voxel size in microns.
-        output_path: Output path without extension; ".nii.gz" is appended.
-        origin_offsets_um: Optional XYZ translation offsets in microns.
+    Parameters
+    ----------
+    volume : ndarray
+        3D volume array. Saved as uint8.
+    voxel_size_um : float
+        Isotropic voxel size in microns.
+    output_path : str
+        Output path without extension; ".nii.gz" is appended.
+    origin_offsets_um : ndarray, optional
+        Optional XYZ translation offsets in microns.
     """
 
     if origin_offsets_um is None:

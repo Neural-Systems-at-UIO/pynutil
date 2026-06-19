@@ -203,11 +203,15 @@ def read_seg_file(file: str) -> np.ndarray:
 def number_sections(filenames):
     """Extract section numbers from a list of filenames.
 
-    Args:
-        filenames (list): List of file paths.
+    Parameters
+    ----------
+    filenames : list
+        List of file paths.
 
-    Returns:
-        list: List of section numbers as integers.
+    Returns
+    -------
+    list
+        List of section numbers as integers.
     """
     filenames = [os.path.basename(filename) for filename in filenames]
     section_numbers = []
