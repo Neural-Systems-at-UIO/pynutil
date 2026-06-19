@@ -62,6 +62,9 @@ def read_alignment(
 ) -> RegistrationData:
     """Load registration data for downstream PyNutil processing.
 
+    This is the main entry point for loading registration data. It supports
+    mixing and matching different components.
+
     Parameters
     ----------
     path

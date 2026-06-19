@@ -157,7 +157,9 @@ class DeformationProvider(ABC):
         Parameters
         ----------
         data : RegistrationData
-            With basic anchoring.
+            Registration data whose slices contain linear atlas anchoring.
+            The provider augments each slice with inverse and forward
+            non-linear deformation functions.
 
         Returns
         -------
@@ -184,7 +186,9 @@ class DamageProvider(ABC):
         Parameters
         ----------
         data : RegistrationData
-            May already have deformation.
+            Registration data whose slices contain linear anchoring and may
+            also contain deformation functions. The provider augments each
+            slice with a damage/exclusion mask.
 
         Returns
         -------
