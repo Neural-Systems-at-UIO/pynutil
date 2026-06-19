@@ -2,7 +2,7 @@
 
 1. Regression: compares counts CSV columns against stored expected output.
 2. Consistency: verifies that per-region counts in the meshview JSONs match
-   the counts reported in the whole_series_report counts CSV (matched by
+   the counts reported in the counts CSV (matched by
    region name, since meshview idx is sequential while report idx is the
    atlas region ID).
 """
@@ -74,7 +74,6 @@ class TestBrainGlobeCoordinateQuantification(TimedTestCase):
         expected_path = os.path.join(
             TESTS_DIR,
             self.test_case["expected_output_folder"],
-            "whole_series_report",
             "counts.csv",
         )
         expected = pd.read_csv(expected_path, sep=";")
@@ -102,7 +101,7 @@ class TestBrainGlobeCoordinateQuantification(TimedTestCase):
 
     def _meshview_counts_by_name(self, filename):
         meshview_path = os.path.join(
-            self._tmpdir, "whole_series_meshview", filename
+            self._tmpdir, filename
         )
         meshview = self._load_json(meshview_path)
         return {entry["name"]: entry["count"] for entry in meshview}
@@ -151,7 +150,7 @@ class TestBrainGlobeCoordinateQuantification(TimedTestCase):
         """Each meshview entry's triplets array length must equal 3 * count."""
         for filename in ("objects_meshview.json", "pixels_meshview.json"):
             meshview_path = os.path.join(
-                self._tmpdir, "whole_series_meshview", filename
+                self._tmpdir, filename
             )
             meshview = self._load_json(meshview_path)
             for entry in meshview:
@@ -186,7 +185,7 @@ class TestBrainGlobeCoordinateQuantification(TimedTestCase):
         for filename in ("objects_meshview.json", "pixels_meshview.json"):
             with self.subTest(file=filename):
                 meshview_path = os.path.join(
-                    self._tmpdir, "whole_series_meshview", filename
+                    self._tmpdir, filename
                 )
                 meshview = self._load_json(meshview_path)
                 total = sum(entry["count"] for entry in meshview)
@@ -221,15 +220,15 @@ class TestBrainGlobeCoordinateQuantification(TimedTestCase):
         for kind in ("objects", "pixels"):
             with self.subTest(kind=kind):
                 full_path = os.path.join(
-                    self._tmpdir, "whole_series_meshview",
+                    self._tmpdir,
                     f"{kind}_meshview.json",
                 )
                 left_path = os.path.join(
-                    self._tmpdir, "whole_series_meshview",
+                    self._tmpdir,
                     f"left_hemisphere_{kind}_meshview.json",
                 )
                 right_path = os.path.join(
-                    self._tmpdir, "whole_series_meshview",
+                    self._tmpdir,
                     f"right_hemisphere_{kind}_meshview.json",
                 )
 

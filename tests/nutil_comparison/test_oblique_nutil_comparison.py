@@ -47,7 +47,6 @@ class TestObliqueNutilComparison(TimedTestCase):
             self.tests_dir,
             "expected_outputs",
             "allen_oblique_test",
-            "whole_series_report",
         )
 
     def _run_pynutil_oblique(self):
