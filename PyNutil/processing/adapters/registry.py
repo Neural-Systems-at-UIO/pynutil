@@ -7,6 +7,7 @@ and damage providers.
 
 from __future__ import annotations
 
+import os
 from typing import Dict, Optional, Type
 
 from .base import (
@@ -93,6 +94,10 @@ def read_alignment(
             damage_provider=QCAlignDamageProvider("qcalign_output.json")
         )
     """
+    # Accept both str and os.PathLike (e.g. pathlib.Path); loaders below
+    # rely on string operations like ``path.endswith(...)``.
+    path = os.fspath(path)
+
     # 1. Load anchoring
     if loader_name:
         loader = AnchoringLoaderRegistry.get(loader_name)
