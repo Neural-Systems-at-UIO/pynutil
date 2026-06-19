@@ -109,6 +109,98 @@ def _run_batch_with_context(
 # ---------------------------------------------------------------------------
 
 
+def _section_from_path(
+    path: Union[str, os.PathLike],
+    section_number: Optional[int] = None,
+) -> "tuple[int, Section]":
+    """Build a lazily-loaded :class:`~PyNutil.Section` from a single file.
+
+    The section number is taken from *section_number* when given, otherwise it
+    is inferred from the filename.
+    """
+    path = os.fspath(path)
+    nr = section_number if section_number is not None else int(number_sections([path])[0])
+    return nr, Section(section_number=nr, filename=path, path=path)
+
+
+def _sections_from_dir(folder: Union[str, os.PathLike]) -> Dict[int, Section]:
+    """Discover image files in *folder* and build one Section per file."""
+    sections: Dict[int, Section] = {}
+    for path in discover_image_files(folder):
+        nr, section = _section_from_path(path)
+        if nr in sections:
+            raise ValueError(f"Duplicate section number {nr} in {folder}.")
+        sections[nr] = section
+    return sections
+
+
+def read_segmentation(
+    path: Union[str, os.PathLike],
+    pixel_id: Optional[Union[str, Sequence[int], np.ndarray]] = None,
+    segmentation_format: str = "binary",
+    section_number: Optional[int] = None,
+) -> ImageSeries:
+    """Read a single segmentation file into a one-section :class:`~PyNutil.ImageSeries`.
+
+    The image is **not** loaded immediately — it loads on demand when the
+    pipeline processes the section. Use this to process sections one at a time
+    (for example to produce per-section reports); use
+    :func:`read_segmentation_dir` for a whole folder.
+
+    Parameters
+    ----------
+    path : str or os.PathLike
+        Path to a single segmentation image file.
+    pixel_id : str, sequence of int, numpy.ndarray, or None
+        RGB value or label identifying the segmented class of interest.
+        Defaults to ``[0, 0, 0]``.
+    segmentation_format : str
+        Name of the segmentation adapter to use, for example ``"binary"`` or
+        ``"cellpose"``.
+    section_number : int, optional
+        Section number to assign. Inferred from the filename when omitted.
+
+    Returns
+    -------
+    ImageSeries
+        An :class:`~PyNutil.ImageSeries` containing a single
+        :class:`~PyNutil.Section`.
+    """
+    nr, section = _section_from_path(path, section_number)
+    return ImageSeries(
+        sections={nr: section},
+        pixel_id=pixel_id,
+        segmentation_format=segmentation_format,
+    )
+
+
+def read_image(
+    path: Union[str, os.PathLike],
+    section_number: Optional[int] = None,
+) -> ImageSeries:
+    """Read a single source image into a one-section :class:`~PyNutil.ImageSeries`.
+
+    The image is **not** loaded immediately — it loads on demand when the
+    pipeline processes the section. Use :func:`read_image_dir` for a whole
+    folder.
+
+    Parameters
+    ----------
+    path : str or os.PathLike
+        Path to a single source image file.
+    section_number : int, optional
+        Section number to assign. Inferred from the filename when omitted.
+
+    Returns
+    -------
+    ImageSeries
+        An :class:`~PyNutil.ImageSeries` containing a single
+        :class:`~PyNutil.Section`.
+    """
+    nr, section = _section_from_path(path, section_number)
+    return ImageSeries(sections={nr: section})
+
+
 def read_segmentation_dir(
     folder: Union[str, os.PathLike],
     pixel_id: Optional[Union[str, Sequence[int], np.ndarray]] = None,
@@ -137,15 +229,8 @@ def read_segmentation_dir(
         ``section_number`` inferred from the filename and ``path`` set for
         lazy loading.
     """
-    paths = discover_image_files(folder)
-    sections: Dict[int, Section] = {}
-    for path in paths:
-        nr = int(number_sections([path])[0])
-        if nr in sections:
-            raise ValueError(f"Duplicate section number {nr} in {folder}.")
-        sections[nr] = Section(section_number=nr, filename=path, path=path)
     return ImageSeries(
-        sections=sections,
+        sections=_sections_from_dir(folder),
         pixel_id=pixel_id,
         segmentation_format=segmentation_format,
     )
@@ -168,14 +253,7 @@ def read_image_dir(folder: Union[str, os.PathLike]) -> ImageSeries:
         One :class:`~PyNutil.Section` per discovered file, with ``section_number``
         inferred from the filename and ``path`` set for lazy loading.
     """
-    paths = discover_image_files(folder)
-    sections: Dict[int, Section] = {}
-    for path in paths:
-        nr = int(number_sections([path])[0])
-        if nr in sections:
-            raise ValueError(f"Duplicate section number {nr} in {folder}.")
-        sections[nr] = Section(section_number=nr, filename=path, path=path)
-    return ImageSeries(sections=sections)
+    return ImageSeries(sections=_sections_from_dir(folder))
 
 
 # ---------------------------------------------------------------------------

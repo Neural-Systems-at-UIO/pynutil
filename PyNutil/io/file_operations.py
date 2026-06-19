@@ -38,11 +38,6 @@ class SaveContext:
 
 def _ensure_analysis_output_dirs(output_folder: str) -> None:
     os.makedirs(output_folder, exist_ok=True)
-    for subdir in (
-        "whole_series_report",
-        "whole_series_meshview",
-    ):
-        os.makedirs(f"{output_folder}/{subdir}", exist_ok=True)
 
 
 def save_analysis_output(ctx: SaveContext, output_folder: str):
@@ -62,7 +57,7 @@ def save_analysis_output(ctx: SaveContext, output_folder: str):
     if ctx.label_df is not None:
         report_name = "intensity.csv" if ctx.is_intensity else "counts.csv"
         ctx.label_df.to_csv(
-            f"{output_folder}/whole_series_report/{ctx.prepend}{report_name}",
+            f"{output_folder}/{ctx.prepend}{report_name}",
             sep=";",
             na_rep="",
             index=False,
@@ -74,7 +69,7 @@ def save_analysis_output(ctx: SaveContext, output_folder: str):
         )
 
     if ctx.points is not None:
-        _save_whole_series_meshview(ctx, output_folder)
+        _save_meshview(ctx, output_folder)
 
     _save_settings_json(ctx, output_folder)
 
@@ -88,13 +83,13 @@ def _save_settings_json(ctx: SaveContext, output_folder: str) -> None:
         json.dump(ctx.settings_dict, f, indent=4)
 
 
-def _save_whole_series_meshview(ctx: SaveContext, output_folder: str):
-    """Write whole-series MeshView JSONs for pixels and centroids."""
+def _save_meshview(ctx: SaveContext, output_folder: str):
+    """Write MeshView JSONs for pixels and centroids."""
     write_hemi_points_to_meshview(
         ctx.points,
         ctx.point_labels,
         ctx.points_hemi_labels,
-        f"{output_folder}/whole_series_meshview/{ctx.prepend}pixels_meshview.json",
+        f"{output_folder}/{ctx.prepend}pixels_meshview.json",
         ctx.atlas_labels,
         ctx.point_values,
         colormap=ctx.colormap,
@@ -104,7 +99,7 @@ def _save_whole_series_meshview(ctx: SaveContext, output_folder: str):
             ctx.objects,
             ctx.object_labels,
             ctx.objects_hemi_labels,
-            f"{output_folder}/whole_series_meshview/{ctx.prepend}objects_meshview.json",
+            f"{output_folder}/{ctx.prepend}objects_meshview.json",
             ctx.atlas_labels,
             colormap=ctx.colormap,
         )
@@ -171,7 +166,7 @@ def save_analysis(
         remapped["idx"] = remapped["original_idx"]
         remapped = remapped.drop(columns=["original_idx"])
         remapped.to_csv(
-            f"{output_folder}/whole_series_report/counts.csv",
+            f"{output_folder}/counts.csv",
             sep=";",
             index=False,
         )

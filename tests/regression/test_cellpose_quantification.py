@@ -31,7 +31,6 @@ class TestCellposeQuantification(TimedTestCase):
         expected_output_path = os.path.join(
             self.test_case_dir,
             test_case["expected_output_folder"],
-            "whole_series_report",
             "counts.csv",
         )
         expected_output = pd.read_csv(expected_output_path, sep=";")
