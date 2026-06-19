@@ -121,7 +121,7 @@ class TestCreateVisualisationsAdapter(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             save_analysis(tmp, result, atlas, label_df)
             self.assertTrue(
-                os.path.isfile(os.path.join(tmp, "whole_series_report", "counts.csv"))
+                os.path.isfile(os.path.join(tmp, "counts.csv"))
                 )
 
 

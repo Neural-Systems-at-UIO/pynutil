@@ -33,8 +33,6 @@ class TestMeshviewRegression(TimedTestCase):
     EXPECTED_ROOT = os.path.join(
         os.path.dirname(os.path.dirname(__file__)), "expected_outputs", "brainglobe_atlas"
     )
-    MESHVIEW_DIR = "whole_series_meshview"
-
     MESHVIEW_FILES = [
         "objects_meshview.json",
         "pixels_meshview.json",
@@ -136,15 +134,11 @@ class TestMeshviewRegression(TimedTestCase):
     # ------------------------------------------------------------------
 
     def test_meshview_files_match_expected(self):
-        """Each whole_series_meshview JSON must match the expected reference."""
+        """Each MeshView JSON must match the expected reference."""
         for filename in self.MESHVIEW_FILES:
             with self.subTest(file=filename):
-                expected_path = os.path.join(
-                    self.EXPECTED_ROOT, self.MESHVIEW_DIR, filename
-                )
-                actual_path = os.path.join(
-                    self._tmpdir, self.MESHVIEW_DIR, filename
-                )
+                expected_path = os.path.join(self.EXPECTED_ROOT, filename)
+                actual_path = os.path.join(self._tmpdir, filename)
 
                 self.assertTrue(
                     os.path.exists(expected_path),
