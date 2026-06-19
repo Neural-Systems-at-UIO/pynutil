@@ -46,7 +46,7 @@ class TestIntensityQuantification(TimedTestCase):
 
         # Assertions
         self.assertTrue(os.path.exists(output_folder))
-        meshview_json = os.path.join(output_folder, "whole_series_meshview", "pixels_meshview.json")
+        meshview_json = os.path.join(output_folder, "pixels_meshview.json")
         self.assertTrue(os.path.exists(meshview_json))
 
         with open(meshview_json, "r") as f:
@@ -78,7 +78,7 @@ class TestIntensityQuantification(TimedTestCase):
 
         # Assertions
         self.assertTrue(os.path.exists(output_folder))
-        meshview_json = os.path.join(output_folder, "whole_series_meshview", "pixels_meshview.json")
+        meshview_json = os.path.join(output_folder, "pixels_meshview.json")
         self.assertTrue(os.path.exists(meshview_json))
 
         with open(meshview_json, "r") as f:
@@ -112,7 +112,7 @@ class TestIntensityQuantification(TimedTestCase):
         save_analysis(output_folder, result, atlas, label_df)
 
         # Assertions
-        meshview_json = os.path.join(output_folder, "whole_series_meshview", "pixels_meshview.json")
+        meshview_json = os.path.join(output_folder, "pixels_meshview.json")
         with open(meshview_json, "r") as f:
             data = json.load(f)
             self.assertGreater(len(data), 0)
