@@ -35,3 +35,21 @@ for path in sorted(segmentation_folder.glob("*.png")):
         atlas,
         label_df=label_df,
     )
+
+# Extract coordinates from segmentations
+segmentations = pnt.read_segmentation_dir(
+    segmentation_folder, pixel_id=colour, segmentation_format="binary"
+)
+coords = pnt.seg_to_coords(segmentations, alignment, atlas, object_cutoff=0)
+
+# Quantify by atlas region
+label_df = pnt.quantify_coords(coords, atlas)
+# Optionally generate a 3D heatmap
+# pnt.interpolate_volume(image_series=segmentations, registration=alignment, atlas=atlas)
+# Save results
+pnt.save_analysis(
+    output_folder / f"whole_series",
+    coords,
+    atlas,
+    label_df=label_df,
+)
