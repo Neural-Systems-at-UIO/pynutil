@@ -4,7 +4,10 @@ The functional API only returns whole-series tables. To get correct
 per-section numbers (including region areas / area_fraction, which are summed
 away in the combined result), run the pipeline one section at a time. Use
 ``read_segmentation`` to load a single file into a one-section ImageSeries.
+
 """
+import os
+
 from pathlib import Path
 
 from brainglobe_atlasapi import BrainGlobeAtlas
@@ -12,12 +15,20 @@ import PyNutil as pnt
 
 # Configuration
 repo_root = Path(__file__).resolve().parents[1]
-segmentation_folder = repo_root / "tests/test_data/allen_oblique_test/segmentations"
-alignment_json = repo_root / "tests/test_data/allen_oblique_test/AMBA_oblique_nonlin_new.jsoncolour = [0, 0, 0]
-output_folder = repo_root / "test_result/allen_oblique_test"
+segmentation_folder = repo_root / "tests/test_data/test17_amba_oblique_double/segmentations"
+alignment_json = repo_root / "tests/test_data/test17_amba_oblique_double/Test17_AMBA_oblique_nonlin_new.json"
+colour = [0, 0, 0]
+output_folder = repo_root / "test_result/test17_amba_oblique_with_per_section"
 
 # Load atlas and alignment once.
-atlas = BrainGlobeAtlas("allen_mouse_25um")
+# atlas = BrainGlobeAtlas("allen_mouse_25um")
+
+atlas = pnt.load_custom_atlas(
+    atlas_path=os.path.join(repo_root,"tests/test_data/allen_mouse_2017_atlas/annotation_25_reoriented_2017.nrrd"),
+    hemi_path=None,
+    label_path=os.path.join(repo_root,"tests/test_data/allen_mouse_2017_atlas/allen2017_colours.csv"))
+
+
 alignment = pnt.read_alignment(alignment_json)
 
 # Process one section at a time.
